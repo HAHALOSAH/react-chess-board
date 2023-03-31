@@ -1,5 +1,5 @@
 {
-  "name": "react-chess-board",
+  "name": "@hahalosah/react-chess-board",
   "version": "0.1.0",
   "description": "A chess board for React",
   "scripts": {
