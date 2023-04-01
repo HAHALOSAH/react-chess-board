@@ -20,9 +20,14 @@ class ChessPieceIcon extends React.Component {
     render() {
         return (jsx("div", Object.assign({ style: {
                 display: typeof this.props.piece == 'number' && typeof this.props.color == 'number' ? 'block' : 'none',
-                filter: 'drop-shadow(0 0 0.5rem #aaaaaa)',
-            } }, { children: typeof this.props.piece == 'number' && typeof this.props.color == 'number' &&
-                Staunty[[['wP', 'wN', 'wB', 'wR', 'wQ', 'wK'], ['bP', 'bN', 'bB', 'bR', 'bQ', 'bK']][this.props.color][this.props.piece]] })));
+                position: "relative"
+            } }, { children: jsx("div", Object.assign({ style: {
+                    filter: 'drop-shadow(0 0 0.5rem #aaaaaa)',
+                    position: 'absolute',
+                    margin: 'auto',
+                    inset: '0',
+                } }, { children: typeof this.props.piece == 'number' && typeof this.props.color == 'number' &&
+                    Staunty[[['wP', 'wN', 'wB', 'wR', 'wQ', 'wK'], ['bP', 'bN', 'bB', 'bR', 'bQ', 'bK']][this.props.color][this.props.piece]] })) })));
     }
 }
 
