@@ -2,8 +2,15 @@
   "name": "@hahalosah/react-chess-board",
   "version": "0.1.0",
   "description": "A chess board for React",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -21,6 +28,13 @@
     "url": "https://github.com/HAHALOSAH/react-chess-board/issues"
   },
   "homepage": "https://github.com/HAHALOSAH/react-chess-board#readme",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@types/react": "^18.0.31",
+    "rollup": "^3.20.2",
+    "tslib": "^2.5.0",
+    "typescript": "^5.0.3"
+  },
   "dependencies": {
     "react": "^18.2.0"
   }
