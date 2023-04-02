@@ -63,10 +63,14 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
                     'grabbing'
                 ) : (
                     this.state.selectedSquare ? (
-                        'pointer'
+                        this.state.selectedSquare && this.state.hoveredSquare && (this.state.hoveredSquare.row == (this.state.selectedSquare as ChessSquare).row && this.state.hoveredSquare.file == (this.state.selectedSquare as ChessSquare).file) ? (
+                            'grab'
+                        ) : (
+                            'pointer'
+                        )
                     ) : (
                         this.state.hoveredSquare && this.props.pieces[this.state.hoveredSquare.row][this.state.hoveredSquare.file] ? (
-                            'grab'
+                            'pointer'
                         ) : (
                             'default'
                         )
