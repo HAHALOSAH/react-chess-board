@@ -1,24 +1,38 @@
 import React from 'react';
 import ChessPieceIcon from './ChessPieceIcon';
 
-import { ChessColor, ChessPiece } from '../types'
+import { ChessPiece, ChessSquare } from '../types'
 
 export default class ChessBoardSquare extends React.Component<ChessBoardSquareProps> {
+    constructor(props: ChessBoardSquareProps) {
+        super(props);
+    }
+    
     render() {
         return (
             <div style={{
-                backgroundColor: (this.props.row + this.props.file) % 2 === 0 ? 'white' : '#AAAAAA',
+                backgroundColor: (this.props.square.row + this.props.square.file) % 2 === 0 ? 'white' : '#AAAAAA',
                 width: '100%',
                 height: '100%',
                 cursor: 'pointer',
-            }}>
-                <ChessPieceIcon color={this.props.row < 4 ? ChessColor.BLACK : ChessColor.WHITE} piece={(this.props.row == 1 || this.props.row == 6) ? ChessPiece.PAWN : this.props.row == 0 || this.props.row == 7 ? [ChessPiece.ROOK, ChessPiece.KNIGHT, ChessPiece.BISHOP, ChessPiece.QUEEN, ChessPiece.KING, ChessPiece.BISHOP, ChessPiece.KNIGHT, ChessPiece.ROOK][this.props.file] : undefined}/>
+                position: 'relative'
+            }} onMouseDown={this.props.onMouseDown}>
+                <div style={{
+                    position: 'absolute',
+                    inset: '0px',
+                    backgroundColor: '#FF8888AA',
+                    pointerEvents: 'none',
+                    display: this.props.selected ? 'block' : 'none'
+                }}></div>
+                <ChessPieceIcon piece={this.props.piece}/>
             </div>
         );
     }
 }
 
 interface ChessBoardSquareProps {
-    row: number;
-    file: number;
+    square: ChessSquare;
+    piece?: ChessPiece;
+    selected?: boolean;
+    onMouseDown?: () => void;
 }

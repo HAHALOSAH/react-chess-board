@@ -2,13 +2,13 @@ import React from 'react';
 
 import Staunty from '../Staunty';
 
-import { ChessColor, ChessPiece } from '../types'
+import { ChessPiece } from '../types'
 
 export default class ChessPieceIcon extends React.Component<ChessPieceIconProps> {
     render() {
         return (
             <div style={{
-                display: typeof this.props.piece == 'number' && typeof this.props.color == 'number' ? 'block' : 'none',
+                display: typeof this.props.piece == 'object' ? 'block' : 'none',
                 position: "relative"
             }}>
                 {
@@ -19,10 +19,22 @@ export default class ChessPieceIcon extends React.Component<ChessPieceIconProps>
                         inset: '0',
                     }}>
                         {
-                            typeof this.props.piece == 'number' && typeof this.props.color == 'number' &&
-                            Staunty[
-                            [['wP', 'wN', 'wB', 'wR', 'wQ', 'wK'], ['bP', 'bN', 'bB', 'bR', 'bQ', 'bK']][this.props.color as number][this.props.piece as number]
-                            ]
+                            typeof this.props.piece == 'object' &&
+                            [[
+                                Staunty['wP'],
+                                Staunty['wN'],
+                                Staunty['wB'],
+                                Staunty['wR'],
+                                Staunty['wQ'],
+                                Staunty['wK']
+                            ], [
+                                Staunty['bP'],
+                                Staunty['bN'],
+                                Staunty['bB'],
+                                Staunty['bR'],
+                                Staunty['bQ'],
+                                Staunty['bK']
+                            ]][this.props.piece.color][this.props.piece.type]
                         }
                     </div>
                 }
@@ -33,5 +45,4 @@ export default class ChessPieceIcon extends React.Component<ChessPieceIconProps>
 
 interface ChessPieceIconProps {
     piece?: ChessPiece,
-    color?: ChessColor
 }
