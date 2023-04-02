@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChessPiece, ChessSquare } from '../types';
+import { ChessMove, ChessPiece, ChessSquare } from '../types';
 import { Chess } from '../../node_modules/chess.js/dist/chess';
 export default class ChessBoard extends React.Component<ChessBoardProps, ChessBoardState> {
     _chess: Chess;
@@ -8,6 +8,7 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
     onClick(): void;
     updatePieces(): void;
     componentDidMount(): void;
+    onMove(move: ChessMove): void;
 }
 interface ChessBoardProps {
 }

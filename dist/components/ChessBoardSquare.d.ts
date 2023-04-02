@@ -8,6 +8,9 @@ interface ChessBoardSquareProps {
     square: ChessSquare;
     piece?: ChessPiece;
     selected?: boolean;
+    destination?: boolean;
     onMouseDown?: () => void;
+    onMouseUp?: () => void;
+    onMouseOver?: () => void;
 }
 export {};

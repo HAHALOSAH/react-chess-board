@@ -19,7 +19,7 @@ module.exports = [
             typescript()
         ],
         external: [
-            "react", "react/jsx-runtime"
+            "react", "react-dom", "react/jsx-runtime"
         ]
     }
 ];

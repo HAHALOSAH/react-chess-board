@@ -9,7 +9,8 @@ export default class ChessPieceIcon extends React.Component<ChessPieceIconProps>
         return (
             <div style={{
                 display: typeof this.props.piece == 'object' ? 'block' : 'none',
-                position: "relative"
+                position: "relative",
+                pointerEvents: 'none',
             }}>
                 {
                     <div style={{
@@ -17,6 +18,7 @@ export default class ChessPieceIcon extends React.Component<ChessPieceIconProps>
                         position: 'absolute',
                         margin: 'auto',
                         inset: '0',
+                        pointerEvents: 'none',
                     }}>
                         {
                             typeof this.props.piece == 'object' &&

@@ -22,12 +22,14 @@ class ChessPieceIcon extends React.Component {
     render() {
         return (jsxRuntime.jsx("div", Object.assign({ style: {
                 display: typeof this.props.piece == 'object' ? 'block' : 'none',
-                position: "relative"
+                position: "relative",
+                pointerEvents: 'none',
             } }, { children: jsxRuntime.jsx("div", Object.assign({ style: {
                     filter: 'drop-shadow(0 0 0.5rem #aaaaaa)',
                     position: 'absolute',
                     margin: 'auto',
                     inset: '0',
+                    pointerEvents: 'none',
                 } }, { children: typeof this.props.piece == 'object' &&
                     [[
                             Staunty['wP'],
@@ -54,41 +56,78 @@ class ChessBoardSquare extends React.Component {
     render() {
         return (jsxRuntime.jsxs("div", Object.assign({ style: {
                 backgroundColor: (this.props.square.row + this.props.square.file) % 2 === 0 ? 'white' : '#AAAAAA',
+                border: this.props.destination ? '8px solid #FF8888AA' : '0px solid #FF8888AA',
                 width: '100%',
                 height: '100%',
-                cursor: 'pointer',
-                position: 'relative'
-            }, onMouseDown: this.props.onMouseDown }, { children: [jsxRuntime.jsx("div", { style: {
+                cursor: typeof this.props.piece == 'object' ? 'grab' : 'pointer',
+                position: 'relative',
+                boxSizing: 'border-box',
+                transition: '0.2s'
+            }, onMouseDown: this.props.onMouseDown, onMouseUp: this.props.onMouseUp, onMouseOver: this.props.onMouseOver }, { children: [jsxRuntime.jsx("div", { style: {
                         position: 'absolute',
                         inset: '0px',
                         backgroundColor: '#FF8888AA',
                         pointerEvents: 'none',
-                        display: this.props.selected ? 'block' : 'none'
+                        opacity: this.props.selected ? 1 : 0,
+                        transition: '0.2s'
                     } }), jsxRuntime.jsx(ChessPieceIcon, { piece: this.props.piece })] })));
     }
 }
 
+// https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
+function getElementPosition(element) {
+    var box = element.getBoundingClientRect();
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft;
+    var clientTop = document.documentElement.clientTop || document.body.clientTop || 0;
+    var clientLeft = document.documentElement.clientLeft || document.body.clientLeft || 0;
+    var top = box.top + scrollTop - clientTop;
+    var left = box.left + scrollLeft - clientLeft;
+    return { x: Math.round(left), y: Math.round(top) };
+}
 class ChessBoardSquares extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.draggedChessPieceStyles = {
+            position: 'absolute',
+            width: (1 / 8 * 100) + '%',
+            height: (1 / 8 * 100) + '%',
+            transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none',
+        };
+        this.draggedChessPiece = React.createRef();
+        this.draggedChessPieceContainer = React.createRef();
+        this.chessBoardSquares = React.createRef();
+        this.state = {
+            isDragging: false
+        };
+        this.onSquareHover = this.onSquareHover.bind(this);
+        this.onMouseOut = this.onMouseOut.bind(this);
+        this.onMouseDown = this.onMouseDown.bind(this);
+        this.onMouseUp = this.onMouseUp.bind(this);
+        this.onMouseMove = this.onMouseMove.bind(this);
     }
     render() {
-        return (jsxRuntime.jsx("div", Object.assign({ style: {
+        return (jsxRuntime.jsxs("div", Object.assign({ style: {
                 display: 'grid',
                 gridTemplateColumns: 'repeat(8, 1fr)',
                 gridTemplateRows: 'repeat(8, 1fr)',
                 width: '100%',
                 height: '100%',
                 alignItems: 'stretch',
-            } }, { children: Array(8 * 8).fill(0).map((_, i) => {
-                var _a;
-                let row = (i / 8) | 0;
-                let file = i % 8;
-                return (jsxRuntime.jsx(ChessBoardSquare, { piece: this.props.pieces[row][file], square: { row: row, file: file }, selected: ((_a = this.state.selectedSquare) === null || _a === void 0 ? void 0 : _a.row) == row && this.state.selectedSquare.file == file, onMouseDown: () => {
-                        this.onSquareClick({ row: row, file: file });
-                    } }, i));
-            }) })));
+                cursor: this.state.isDragging ? 'grabbing!important' : 'unset',
+            }, onMouseOut: this.onMouseOut, onMouseDown: this.onMouseDown, ref: this.chessBoardSquares }, { children: [Array(8 * 8).fill(0).map((_, i) => {
+                    var _a, _b;
+                    let row = (i / 8) | 0;
+                    let file = i % 8;
+                    let selected = ((_a = this.state.selectedSquare) === null || _a === void 0 ? void 0 : _a.row) == row && this.state.selectedSquare.file == file;
+                    let destination = ((_b = this.state.destinationSquare) === null || _b === void 0 ? void 0 : _b.row) == row && this.state.destinationSquare.file == file && !selected;
+                    return (jsxRuntime.jsx(ChessBoardSquare, { piece: this.props.pieces[row][file], square: { row: row, file: file }, selected: selected, destination: destination, onMouseDown: () => {
+                            this.onSquareMouseDown({ row: row, file: file });
+                        }, onMouseOver: () => {
+                            this.onSquareHover({ row: row, file: file });
+                        } }, i));
+                }), jsxRuntime.jsx("div", Object.assign({ style: Object.assign(Object.assign({}, this.draggedChessPieceStyles), { display: this.state.isDragging ? 'block' : 'none' }), ref: this.draggedChessPieceContainer }, { children: jsxRuntime.jsx(ChessPieceIcon, { piece: this.state.draggedPiece, ref: this.draggedChessPiece }) }))] })));
     }
     clearSelectedSquare() {
         this.setState({
@@ -100,13 +139,75 @@ class ChessBoardSquares extends React.Component {
             selectedSquare: square
         });
     }
-    onSquareClick(square) {
-        var _a;
-        if (((_a = this.state.selectedSquare) === null || _a === void 0 ? void 0 : _a.row) == square.row && this.state.selectedSquare.file == square.file) {
-            this.setSelectedSquare();
-            return;
+    onSquareMouseDown(square) {
+        if (!this.state.isDragging) {
+            this.setSelectedSquare(square);
+            this.startDragging(square);
         }
-        this.setSelectedSquare(square);
+    }
+    onMouseDown(e) {
+        this.updateDraggedChessPieceLocation(e.nativeEvent);
+    }
+    onMouseUp() {
+        if (!this.state.selectedSquare)
+            return;
+        if (this.state.destinationSquare && this.props.onMove) {
+            this.props.onMove({
+                from: this.state.selectedSquare,
+                to: this.state.destinationSquare
+            });
+        }
+        this.clearSelectedSquare();
+        this.clearDestinationSquare();
+        this.stopDragging();
+    }
+    startDragging(square) {
+        this.setState({
+            isDragging: true,
+            draggedPiece: this.props.pieces[square.row][square.file]
+        });
+    }
+    stopDragging() {
+        this.setState({
+            isDragging: false,
+            draggedPiece: undefined
+        });
+    }
+    clearDestinationSquare() {
+        this.setState({
+            destinationSquare: undefined
+        });
+    }
+    setDestinationSquare(square) {
+        this.setState({
+            destinationSquare: square
+        });
+    }
+    onSquareHover(square) {
+        if (this.state.isDragging)
+            this.setDestinationSquare(square);
+    }
+    onMouseMove(e) {
+        this.updateDraggedChessPieceLocation(e);
+    }
+    updateDraggedChessPieceLocation(e) {
+        if (this.draggedChessPieceContainer.current == null || this.chessBoardSquares.current == null)
+            return;
+        let draggedChessPiece = this.draggedChessPieceContainer.current;
+        let boardPosition = getElementPosition(this.chessBoardSquares.current);
+        draggedChessPiece.style.left = (e.clientX - boardPosition.x) + 'px';
+        draggedChessPiece.style.top = (e.clientY - boardPosition.y) + 'px';
+    }
+    onMouseOut() {
+        this.clearDestinationSquare();
+    }
+    componentDidMount() {
+        document.addEventListener('mousemove', this.onMouseMove);
+        document.addEventListener('mouseup', this.onMouseUp);
+    }
+    componentWillUnmount() {
+        document.removeEventListener('mousemove', this.onMouseMove);
+        document.removeEventListener('mouseup', this.onMouseUp);
     }
 }
 
@@ -1881,20 +1982,25 @@ class Chess {
     }
 }
 
+function chessSquareToText(square) {
+    return ["a", "b", "c", "d", "e", "f", "g", "h"][square.file] + (8 - square.row);
+}
+
 class ChessBoard extends React.Component {
     constructor(props) {
         super(props);
         this._chess = new Chess();
-        this.onClick = this.onClick.bind(this);
         this.state = {
             pieces: Array(8).fill([])
         };
+        this.onClick = this.onClick.bind(this);
+        this.onMove = this.onMove.bind(this);
     }
     render() {
         return (jsxRuntime.jsx("div", Object.assign({ style: {
                 width: '100%',
                 aspectRatio: '1/1',
-            }, onClick: this.onClick }, { children: jsxRuntime.jsx(ChessBoardSquares, { pieces: this.state.pieces }) })));
+            }, onClick: this.onClick }, { children: jsxRuntime.jsx(ChessBoardSquares, { pieces: this.state.pieces, onMove: this.onMove }) })));
     }
     onClick() {
     }
@@ -1913,6 +2019,19 @@ class ChessBoard extends React.Component {
         });
     }
     componentDidMount() {
+        this.updatePieces();
+    }
+    onMove(move) {
+        try {
+            this._chess.move({
+                from: chessSquareToText(move.from),
+                to: chessSquareToText(move.to),
+            });
+        }
+        catch (e) {
+            // Invalid move, just ignore it
+            return;
+        }
         this.updatePieces();
     }
 }

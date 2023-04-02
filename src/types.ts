@@ -21,3 +21,9 @@ export interface ChessSquare {
     row: number;
     file: number;
 }
+
+export interface ChessMove {
+    from: ChessSquare;
+    to: ChessSquare;
+    promotion?: ChessPieceType;
+}
