@@ -15,11 +15,10 @@ export default class ChessBoardSquare extends React.Component<ChessBoardSquarePr
                 border: this.props.destination ? '8px solid #FF8888AA' : '0px solid #FF8888AA',
                 width: '100%',
                 height: '100%',
-                cursor: typeof this.props.piece == 'object' ? 'grab' : 'pointer',
                 position: 'relative',
                 boxSizing: 'border-box',
-                transition: '0.2s'
-            }} onMouseDown={this.props.onMouseDown} onMouseUp={this.props.onMouseUp} onMouseOver={this.props.onMouseOver}>
+                transition: '0.2s',
+            }} onMouseDown={this.props.onMouseDown} onMouseUp={this.props.onMouseUp} onMouseOver={this.props.onMouseOver} tabIndex={0}>
                 <div style={{
                     position: 'absolute',
                     inset: '0px',

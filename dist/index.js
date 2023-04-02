@@ -59,11 +59,10 @@ class ChessBoardSquare extends React.Component {
                 border: this.props.destination ? '8px solid #FF8888AA' : '0px solid #FF8888AA',
                 width: '100%',
                 height: '100%',
-                cursor: typeof this.props.piece == 'object' ? 'grab' : 'pointer',
                 position: 'relative',
                 boxSizing: 'border-box',
-                transition: '0.2s'
-            }, onMouseDown: this.props.onMouseDown, onMouseUp: this.props.onMouseUp, onMouseOver: this.props.onMouseOver }, { children: [jsxRuntime.jsx("div", { style: {
+                transition: '0.2s',
+            }, onMouseDown: this.props.onMouseDown, onMouseUp: this.props.onMouseUp, onMouseOver: this.props.onMouseOver, tabIndex: 0 }, { children: [jsxRuntime.jsx("div", { style: {
                         position: 'absolute',
                         inset: '0px',
                         backgroundColor: '#FF8888AA',
@@ -116,7 +115,7 @@ class ChessBoardSquares extends React.Component {
                 width: '100%',
                 height: '100%',
                 alignItems: 'stretch',
-                cursor: this.state.isDragging ? 'grabbing!important' : 'unset',
+                cursor: this.state.isDragging ? ('grabbing') : (this.state.selectedSquare ? ('pointer') : (this.state.hoveredSquare && this.props.pieces[this.state.hoveredSquare.row][this.state.hoveredSquare.file] ? ('grab') : ('default'))),
             }, onMouseOut: this.onMouseOut, onMouseDown: this.onMouseDown, ref: this.chessBoardSquares }, { children: [Array(8 * 8).fill(0).map((_, i) => {
                     var _a, _b;
                     let row = (i / 8) | 0;
@@ -141,6 +140,9 @@ class ChessBoardSquares extends React.Component {
         });
     }
     onSquareMouseDown(square) {
+        if (!this.props.pieces[square.row][square.file] && !this.state.selectedSquare) {
+            return;
+        }
         if (this.state.selectedSquare && (this.state.selectedSquare.row != square.row || this.state.selectedSquare.file != square.file)) {
             if (this.props.pieces[square.row][square.file] && (this.props.pieces[square.row][square.file]).color == (this.props.pieces[this.state.selectedSquare.row][this.state.selectedSquare.file]).color) {
                 this.setState({
@@ -223,6 +225,9 @@ class ChessBoardSquares extends React.Component {
         });
     }
     onSquareHover(square) {
+        this.setState({
+            hoveredSquare: square
+        });
         if (this.state.selectedSquare)
             this.setDestinationSquare(square);
     }

@@ -59,7 +59,19 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
                 width: '100%',
                 height: '100%',
                 alignItems: 'stretch',
-                cursor: this.state.isDragging ? 'grabbing!important' : 'unset',
+                cursor: this.state.isDragging ? (
+                    'grabbing'
+                ) : (
+                    this.state.selectedSquare ? (
+                        'pointer'
+                    ) : (
+                        this.state.hoveredSquare && this.props.pieces[this.state.hoveredSquare.row][this.state.hoveredSquare.file] ? (
+                            'grab'
+                        ) : (
+                            'default'
+                        )
+                    )
+                ),
             }} onMouseOut={this.onMouseOut} onMouseDown={this.onMouseDown} ref={this.chessBoardSquares}>
                 {
                     Array(8 * 8).fill(0).map((_, i) => {
@@ -101,6 +113,9 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
     }
 
     onSquareMouseDown(square: ChessSquare) {
+        if (!this.props.pieces[square.row][square.file] && !this.state.selectedSquare) {
+            return;
+        }
         if (this.state.selectedSquare && (this.state.selectedSquare.row != square.row || this.state.selectedSquare.file != square.file)) {
             if (this.props.pieces[square.row][square.file] && ((this.props.pieces[square.row][square.file]) as ChessPiece).color == ((this.props.pieces[this.state.selectedSquare.row][this.state.selectedSquare.file]) as ChessPiece).color) {    
                 this.setState({
@@ -188,6 +203,9 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
     }
 
     onSquareHover(square: ChessSquare) {
+        this.setState({
+            hoveredSquare: square
+        });
         if (this.state.selectedSquare) this.setDestinationSquare(square);
     }
 
@@ -227,6 +245,7 @@ interface ChessBoardSquaresState {
     selectedSquare?: ChessSquare;
     destinationSquare?: ChessSquare;
     draggedPiece?: ChessPiece;
+    hoveredSquare?: ChessSquare;
     isDragging: boolean;
     willDeselect: boolean;
 }
