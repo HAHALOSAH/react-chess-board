@@ -33,5 +33,6 @@ interface ChessBoardSquaresState {
     destinationSquare?: ChessSquare;
     draggedPiece?: ChessPiece;
     isDragging: boolean;
+    willDeselect: boolean;
 }
 export {};

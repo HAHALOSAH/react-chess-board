@@ -39,7 +39,8 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
     constructor(props: ChessBoardSquaresProps) {
         super(props);
         this.state = {
-            isDragging: false
+            isDragging: false,
+            willDeselect: false,
         };
 
         this.onSquareHover = this.onSquareHover.bind(this);
@@ -67,17 +68,18 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
                         let selected = this.state.selectedSquare?.row == row && this.state.selectedSquare.file == file;
                         let destination = this.state.destinationSquare?.row == row && this.state.destinationSquare.file == file && !selected;
                         return (
-                            <ChessBoardSquare piece={this.props.pieces[row][file]} square={{ row: row, file: file }} key={i} selected={selected} 
-                            destination={destination} onMouseDown={() => {
-                                this.onSquareMouseDown({ row: row, file: file });
-                            }} onMouseOver={() => {
-                                this.onSquareHover({ row: row, file: file });
-                            }} />
+                            <ChessBoardSquare piece={this.props.pieces[row][file]} square={{ row: row, file: file }} key={i} selected={selected}
+                                destination={destination} onMouseDown={() => {
+                                    this.onSquareMouseDown({ row: row, file: file });
+                                }} onMouseOver={() => {
+                                    this.onSquareHover({ row: row, file: file });
+                                }} />
                         );
                     })
                 }
 
-                <div style={{...this.draggedChessPieceStyles,
+                <div style={{
+                    ...this.draggedChessPieceStyles,
                     display: this.state.isDragging ? 'block' : 'none',
                 }} ref={this.draggedChessPieceContainer}>
                     <ChessPieceIcon piece={this.state.draggedPiece} ref={this.draggedChessPiece} />
@@ -99,9 +101,30 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
     }
 
     onSquareMouseDown(square: ChessSquare) {
+        if (this.state.selectedSquare && (this.state.selectedSquare.row != square.row || this.state.selectedSquare.file != square.file)) {
+            if (this.props.pieces[square.row][square.file] && ((this.props.pieces[square.row][square.file]) as ChessPiece).color == ((this.props.pieces[this.state.selectedSquare.row][this.state.selectedSquare.file]) as ChessPiece).color) {    
+                this.setState({
+                    willDeselect: false
+                });
+            } else {
+                if (this.props.onMove) {
+                    this.props.onMove({
+                        from: this.state.selectedSquare,
+                        to: square
+                    });
+                }
+                this.clearSelectedSquare();
+                this.clearDestinationSquare();
+                this.setState({
+                    willDeselect: false
+                });
+                return;
+            }
+        }
         if (!this.state.isDragging) {
             this.setSelectedSquare(square);
             this.startDragging(square);
+            this.setDestinationSquare(square);
         }
     }
 
@@ -112,6 +135,22 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
     onMouseUp() {
         if (!this.state.selectedSquare) return;
         if (this.state.destinationSquare && this.props.onMove) {
+            if (this.state.destinationSquare.row == this.state.selectedSquare.row && this.state.destinationSquare.file == this.state.selectedSquare.file) {
+                this.stopDragging();
+                if (this.state.willDeselect) {
+                    this.clearSelectedSquare();
+                    this.setState({
+                        willDeselect: false
+                    });
+                } else {
+                    this.setState({
+                        willDeselect: true
+                    });
+                }
+                
+                this.clearDestinationSquare();
+                return;
+            }
             this.props.onMove({
                 from: this.state.selectedSquare,
                 to: this.state.destinationSquare
@@ -149,7 +188,7 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
     }
 
     onSquareHover(square: ChessSquare) {
-        if (this.state.isDragging) this.setDestinationSquare(square);
+        if (this.state.selectedSquare) this.setDestinationSquare(square);
     }
 
     onMouseMove(e: MouseEvent) {
@@ -189,4 +228,5 @@ interface ChessBoardSquaresState {
     destinationSquare?: ChessSquare;
     draggedPiece?: ChessPiece;
     isDragging: boolean;
+    willDeselect: boolean;
 }

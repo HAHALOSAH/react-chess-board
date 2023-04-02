@@ -99,7 +99,8 @@ class ChessBoardSquares extends React.Component {
         this.draggedChessPieceContainer = React.createRef();
         this.chessBoardSquares = React.createRef();
         this.state = {
-            isDragging: false
+            isDragging: false,
+            willDeselect: false,
         };
         this.onSquareHover = this.onSquareHover.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
@@ -140,9 +141,31 @@ class ChessBoardSquares extends React.Component {
         });
     }
     onSquareMouseDown(square) {
+        if (this.state.selectedSquare && (this.state.selectedSquare.row != square.row || this.state.selectedSquare.file != square.file)) {
+            if (this.props.pieces[square.row][square.file] && (this.props.pieces[square.row][square.file]).color == (this.props.pieces[this.state.selectedSquare.row][this.state.selectedSquare.file]).color) {
+                this.setState({
+                    willDeselect: false
+                });
+            }
+            else {
+                if (this.props.onMove) {
+                    this.props.onMove({
+                        from: this.state.selectedSquare,
+                        to: square
+                    });
+                }
+                this.clearSelectedSquare();
+                this.clearDestinationSquare();
+                this.setState({
+                    willDeselect: false
+                });
+                return;
+            }
+        }
         if (!this.state.isDragging) {
             this.setSelectedSquare(square);
             this.startDragging(square);
+            this.setDestinationSquare(square);
         }
     }
     onMouseDown(e) {
@@ -152,6 +175,22 @@ class ChessBoardSquares extends React.Component {
         if (!this.state.selectedSquare)
             return;
         if (this.state.destinationSquare && this.props.onMove) {
+            if (this.state.destinationSquare.row == this.state.selectedSquare.row && this.state.destinationSquare.file == this.state.selectedSquare.file) {
+                this.stopDragging();
+                if (this.state.willDeselect) {
+                    this.clearSelectedSquare();
+                    this.setState({
+                        willDeselect: false
+                    });
+                }
+                else {
+                    this.setState({
+                        willDeselect: true
+                    });
+                }
+                this.clearDestinationSquare();
+                return;
+            }
             this.props.onMove({
                 from: this.state.selectedSquare,
                 to: this.state.destinationSquare
@@ -184,7 +223,7 @@ class ChessBoardSquares extends React.Component {
         });
     }
     onSquareHover(square) {
-        if (this.state.isDragging)
+        if (this.state.selectedSquare)
             this.setDestinationSquare(square);
     }
     onMouseMove(e) {
