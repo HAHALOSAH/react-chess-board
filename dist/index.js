@@ -323,7 +323,7 @@ class ChessBoardPromotionMenu extends React.Component {
             } }, { children: [jsxRuntime.jsx("div", { style: {
                         position: 'absolute',
                         inset: '0px',
-                        backgroundColor: '#000000AA',
+                        backgroundColor: '#00000088',
                     }, ref: this.backdrop, onClick: () => {
                         this.close();
                         this.returnCallbacks(undefined);
@@ -338,6 +338,7 @@ class ChessBoardPromotionMenu extends React.Component {
                         position: 'relative',
                         left: (this.state.file || 0) / 8 * 100 + '%',
                         top: (this.state.color == ChessColor.WHITE ? 0 : 4) / 8 * 100 + '%',
+                        filter: 'drop-shadow(0px 0px 16px #000000)'
                     }, onMouseOut: this.onMouseOut }, { children: [jsxRuntime.jsx(ChessBoardSquare, { square: { row: this.state.color == ChessColor.WHITE ? 0 : 7, file: this.state.file || 0 }, piece: typeof this.state.color == 'number' ? { color: this.state.color, type: ChessPieceType.QUEEN } : undefined, onMouseOver: () => {
                                 this.onSquareHover(0);
                             }, destination: this.state.selected == 0, onClick: () => {
