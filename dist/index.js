@@ -79,10 +79,10 @@ class ChessBoardSquare extends React.Component {
         super(props);
     }
     render() {
-        return (jsxRuntime.jsxs("div", Object.assign({ style: Object.assign(Object.assign({}, this.props.style), { backgroundColor: (this.props.square.row + this.props.square.file) % 2 === 0 ? 'white' : '#AAAAAA', border: this.props.destination ? '8px solid #FF8888AA' : '0px solid #FF8888AA', width: '100%', height: '100%', position: 'relative', boxSizing: 'border-box', transition: '0.2s' }), onMouseDown: this.props.onMouseDown, onMouseUp: this.props.onMouseUp, onMouseOver: this.props.onMouseOver, onClick: this.props.onClick, tabIndex: 0 }, { children: [jsxRuntime.jsx("div", { style: {
+        return (jsxRuntime.jsxs("div", Object.assign({ style: Object.assign(Object.assign({}, this.props.style), { backgroundColor: (this.props.square.row + this.props.square.file) % 2 === 0 ? 'white' : '#AAAAAA', border: this.props.destination ? '8px solid #FF6666DD' : '0px solid #FF6666DD', width: '100%', height: '100%', position: 'relative', boxSizing: 'border-box', transition: '0.2s' }), onMouseDown: this.props.onMouseDown, onMouseUp: this.props.onMouseUp, onMouseOver: this.props.onMouseOver, onClick: this.props.onClick, tabIndex: 0 }, { children: [jsxRuntime.jsx("div", { style: {
                         position: 'absolute',
                         inset: '0px',
-                        backgroundColor: '#FF8888AA',
+                        backgroundColor: '#FF6666DD',
                         pointerEvents: 'none',
                         opacity: this.props.selected ? 1 : 0,
                         transition: '0.2s'
