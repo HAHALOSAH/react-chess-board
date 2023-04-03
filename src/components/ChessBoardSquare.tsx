@@ -10,7 +10,7 @@ export default class ChessBoardSquare extends React.Component<ChessBoardSquarePr
     
     render() {
         return (
-            <div style={{
+            <div style={{ ... this.props.style,
                 backgroundColor: (this.props.square.row + this.props.square.file) % 2 === 0 ? 'white' : '#AAAAAA',
                 border: this.props.destination ? '8px solid #FF8888AA' : '0px solid #FF8888AA',
                 width: '100%',
@@ -18,7 +18,7 @@ export default class ChessBoardSquare extends React.Component<ChessBoardSquarePr
                 position: 'relative',
                 boxSizing: 'border-box',
                 transition: '0.2s',
-            }} onMouseDown={this.props.onMouseDown} onMouseUp={this.props.onMouseUp} onMouseOver={this.props.onMouseOver} tabIndex={0}>
+            }} onMouseDown={this.props.onMouseDown} onMouseUp={this.props.onMouseUp} onMouseOver={this.props.onMouseOver} onClick={this.props.onClick} tabIndex={0}>
                 <div style={{
                     position: 'absolute',
                     inset: '0px',
@@ -38,7 +38,9 @@ interface ChessBoardSquareProps {
     piece?: ChessPiece;
     selected?: boolean;
     destination?: boolean;
+    style?: React.CSSProperties;
     onMouseDown?: () => void;
     onMouseUp?: () => void;
     onMouseOver?: () => void;
+    onClick?: () => void;
 }

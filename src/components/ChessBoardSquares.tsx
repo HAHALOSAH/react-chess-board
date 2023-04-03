@@ -120,6 +120,12 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
         if (!this.props.pieces[square.row][square.file] && !this.state.selectedSquare) {
             return;
         }
+        if (this.state.isDragging && !this.state.selectedSquare) {
+            this.setState({
+                isDragging: false
+            });
+            return;
+        }
         if (this.state.selectedSquare && (this.state.selectedSquare.row != square.row || this.state.selectedSquare.file != square.file)) {
             if (this.props.pieces[square.row][square.file] && ((this.props.pieces[square.row][square.file]) as ChessPiece).color == ((this.props.pieces[this.state.selectedSquare.row][this.state.selectedSquare.file]) as ChessPiece).color) {    
                 this.setState({
@@ -152,6 +158,12 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
     }
 
     onMouseUp() {
+        if (this.state.isDragging && !this.state.selectedSquare) {
+            this.setState({
+                isDragging: false
+            });
+            return;
+        }
         if (!this.state.selectedSquare) return;
         if (this.state.destinationSquare && this.props.onMove) {
             if (this.state.destinationSquare.row == this.state.selectedSquare.row && this.state.destinationSquare.file == this.state.selectedSquare.file) {

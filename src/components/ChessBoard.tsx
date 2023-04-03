@@ -1,6 +1,7 @@
 import React from 'react';
 
 import ChessBoardSquares from './ChessBoardSquares';
+import ChessBoardPromotionMenu from './ChessBoardPromotionMenu';
 
 import { ChessColor, ChessMove, ChessPiece, ChessPieceType, ChessSquare } from '../types';
 import { Chess } from '../../node_modules/chess.js/dist/chess';
@@ -8,6 +9,7 @@ import { chessSquareToText } from '../util';
 
 export default class ChessBoard extends React.Component<ChessBoardProps, ChessBoardState> {
     _chess = new Chess();
+    promotionMenu: React.RefObject<ChessBoardPromotionMenu> = React.createRef();
     constructor(props: {
 
     }) {
@@ -27,6 +29,7 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
                 aspectRatio: '1/1',
             }} onClick={this.onClick}>
                 <ChessBoardSquares pieces={this.state.pieces} onMove={this.onMove} />
+                <ChessBoardPromotionMenu ref={this.promotionMenu} />
             </div>
         );
     }
@@ -54,11 +57,29 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
         this.updatePieces();
     }
 
-    onMove(move: ChessMove) {
+    async onMove(move: ChessMove) {
+        var promotionTo: ChessPieceType | undefined = undefined;
+        if (this.state.pieces[move.from.row][move.from.file]?.type == ChessPieceType.PAWN) {
+            if (this.state.pieces[move.from.row][move.from.file]?.color == ChessColor.WHITE && move.to.row == 0) {
+                // White pawn promotion
+                if (this.promotionMenu.current) {
+                    promotionTo = await this.promotionMenu.current.openAsync(ChessColor.WHITE, move.to.file);
+                    if (!promotionTo) return;
+                }
+            }
+            if (this.state.pieces[move.from.row][move.from.file]?.color == ChessColor.BLACK && move.to.row == 7) {
+                // Black pawn promotion
+                if (this.promotionMenu.current) {
+                    promotionTo = await this.promotionMenu.current.openAsync(ChessColor.BLACK, move.to.file);
+                    if (!promotionTo) return;
+                }
+            }
+        }
         try {
             this._chess.move({
                 from: chessSquareToText(move.from),
                 to: chessSquareToText(move.to),
+                promotion: typeof promotionTo == 'number' ? ["p", "k", "b", "r", "q", "k"][promotionTo] : undefined
             });
         } catch (e) {
             // Invalid move, just ignore it
