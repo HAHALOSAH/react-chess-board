@@ -2,6 +2,7 @@
 // License: CC BY-NC-SA 4.0
 // https://creativecommons.org/licenses/by-nc-sa/4.0/
 // Author: sadsnake1
+// Modified by HAHALOSAH to work with react-chess-board
 
 import React from 'react';
 
