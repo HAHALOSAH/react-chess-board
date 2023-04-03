@@ -84,6 +84,16 @@ class ChessBoardSquare extends React.Component {
                         pointerEvents: 'none',
                         opacity: this.props.selected ? 1 : 0,
                         transition: '0.2s'
+                    } }), jsx("div", { style: {
+                        position: 'absolute',
+                        inset: '0px',
+                        margin: 'auto',
+                        width: typeof this.props.piece == 'object' ? '100%' : '35%',
+                        height: typeof this.props.piece == 'object' ? '100%' : '35%',
+                        borderRadius: '50%',
+                        backgroundColor: '#00000033',
+                        pointerEvents: 'none',
+                        opacity: this.props.valid ? 1 : 0,
                     } }), jsx(ChessPieceIcon, { piece: this.props.piece })] })));
     }
 }
@@ -115,6 +125,7 @@ class ChessBoardSquares extends React.Component {
         this.state = {
             isDragging: false,
             willDeselect: false,
+            legalMoves: [],
         };
         this.onSquareHover = this.onSquareHover.bind(this);
         this.onMouseOut = this.onMouseOut.bind(this);
@@ -137,7 +148,8 @@ class ChessBoardSquares extends React.Component {
                     let file = i % 8;
                     let selected = ((_a = this.state.selectedSquare) === null || _a === void 0 ? void 0 : _a.row) == row && this.state.selectedSquare.file == file;
                     let destination = ((_b = this.state.destinationSquare) === null || _b === void 0 ? void 0 : _b.row) == row && this.state.destinationSquare.file == file && !selected;
-                    return (jsx(ChessBoardSquare, { piece: this.props.pieces[row][file], square: { row: row, file: file }, selected: selected, destination: destination, onMouseDown: () => {
+                    let valid = this.state.selectedSquare && this.state.legalMoves.some(square => square.row == row && square.file == file);
+                    return (jsx(ChessBoardSquare, { piece: this.props.pieces[row][file], square: { row: row, file: file }, selected: selected, valid: valid, destination: destination, onMouseDown: () => {
                             this.onSquareMouseDown({ row: row, file: file });
                         }, onMouseOver: () => {
                             this.onSquareHover({ row: row, file: file });
@@ -189,6 +201,7 @@ class ChessBoardSquares extends React.Component {
             this.setSelectedSquare(square);
             this.startDragging(square);
             this.setDestinationSquare(square);
+            this.updateLegalMoves(square);
         }
     }
     onMouseDown(e) {
@@ -279,6 +292,18 @@ class ChessBoardSquares extends React.Component {
     componentWillUnmount() {
         document.removeEventListener('mousemove', this.onMouseMove);
         document.removeEventListener('mouseup', this.onMouseUp);
+    }
+    updateLegalMoves(square) {
+        if (this.props.getLegalMoves) {
+            this.setState({
+                legalMoves: this.props.getLegalMoves(square)
+            });
+        }
+        else {
+            this.setState({
+                legalMoves: []
+            });
+        }
     }
 }
 
@@ -2172,12 +2197,13 @@ class ChessBoard extends React.Component {
         };
         this.onClick = this.onClick.bind(this);
         this.onMove = this.onMove.bind(this);
+        this.getLegalMoves = this.getLegalMoves.bind(this);
     }
     render() {
         return (jsxs("div", Object.assign({ style: {
                 width: '100%',
                 aspectRatio: '1/1',
-            }, onClick: this.onClick }, { children: [jsx(ChessBoardSquares, { pieces: this.state.pieces, onMove: this.onMove }), jsx(ChessBoardPromotionMenu, { ref: this.promotionMenu })] })));
+            }, onClick: this.onClick }, { children: [jsx(ChessBoardSquares, { pieces: this.state.pieces, onMove: this.onMove, getLegalMoves: this.getLegalMoves }), jsx(ChessBoardPromotionMenu, { ref: this.promotionMenu })] })));
     }
     onClick() {
     }
@@ -2232,6 +2258,14 @@ class ChessBoard extends React.Component {
                 return;
             }
             this.updatePieces();
+        });
+    }
+    getLegalMoves(square) {
+        return this._chess.moves({ square: chessSquareToText(square), verbose: true }).map(move => {
+            return {
+                row: 8 - parseInt(move.to[1]),
+                file: ["a", "b", "c", "d", "e", "f", "g", "h"].indexOf(move.to[0])
+            };
         });
     }
 }

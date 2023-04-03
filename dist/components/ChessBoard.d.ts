@@ -11,6 +11,10 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
     updatePieces(): void;
     componentDidMount(): void;
     onMove(move: ChessMove): Promise<void>;
+    getLegalMoves(square: ChessSquare): {
+        row: number;
+        file: number;
+    }[];
 }
 interface ChessBoardProps {
 }

@@ -4,7 +4,7 @@ import ChessBoardSquares from './ChessBoardSquares';
 import ChessBoardPromotionMenu from './ChessBoardPromotionMenu';
 
 import { ChessColor, ChessMove, ChessPiece, ChessPieceType, ChessSquare } from '../types';
-import { Chess } from '../../node_modules/chess.js/dist/chess';
+import { Chess, Square } from '../../node_modules/chess.js/dist/chess';
 import { chessSquareToText } from '../util';
 
 export default class ChessBoard extends React.Component<ChessBoardProps, ChessBoardState> {
@@ -20,6 +20,7 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
 
         this.onClick = this.onClick.bind(this);
         this.onMove = this.onMove.bind(this);
+        this.getLegalMoves = this.getLegalMoves.bind(this);
     }
 
     render() {
@@ -28,7 +29,7 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
                 width: '100%',
                 aspectRatio: '1/1',
             }} onClick={this.onClick}>
-                <ChessBoardSquares pieces={this.state.pieces} onMove={this.onMove} />
+                <ChessBoardSquares pieces={this.state.pieces} onMove={this.onMove} getLegalMoves={this.getLegalMoves} />
                 <ChessBoardPromotionMenu ref={this.promotionMenu} />
             </div>
         );
@@ -86,6 +87,15 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
             return;
         }
         this.updatePieces();
+    }
+
+    getLegalMoves(square: ChessSquare) {
+        return this._chess.moves({ square: chessSquareToText(square) as Square, verbose: true }).map(move => {
+            return {
+                row: 8 - parseInt(move.to[1]),
+                file: ["a", "b", "c", "d", "e", "f", "g", "h"].indexOf(move.to[0])
+            };
+        });
     }
 }
 

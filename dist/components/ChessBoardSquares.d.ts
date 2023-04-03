@@ -23,10 +23,12 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
     onMouseOut(): void;
     componentDidMount(): void;
     componentWillUnmount(): void;
+    updateLegalMoves(square: ChessSquare): void;
 }
 interface ChessBoardSquaresProps {
     pieces: (ChessPiece | undefined)[][];
     onMove?: (move: ChessMove) => void;
+    getLegalMoves?: (square: ChessSquare) => ChessSquare[];
 }
 interface ChessBoardSquaresState {
     selectedSquare?: ChessSquare;
@@ -35,5 +37,6 @@ interface ChessBoardSquaresState {
     hoveredSquare?: ChessSquare;
     isDragging: boolean;
     willDeselect: boolean;
+    legalMoves: ChessSquare[];
 }
 export {};

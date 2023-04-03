@@ -27,7 +27,18 @@ export default class ChessBoardSquare extends React.Component<ChessBoardSquarePr
                     opacity: this.props.selected ? 1 : 0,
                     transition: '0.2s'
                 }}></div>
-                <ChessPieceIcon piece={this.props.piece}/>
+                <div style={{
+                    position: 'absolute',
+                    inset: '0px',
+                    margin: 'auto',
+                    width: typeof this.props.piece == 'object' ? '100%' : '35%',
+                    height: typeof this.props.piece == 'object' ? '100%' : '35%',
+                    borderRadius: '50%',
+                    backgroundColor: '#00000033',
+                    pointerEvents: 'none',
+                    opacity: this.props.valid ? 1 : 0,
+                }} ></div>
+                <ChessPieceIcon piece={this.props.piece} />
             </div>
         );
     }
@@ -38,6 +49,7 @@ interface ChessBoardSquareProps {
     piece?: ChessPiece;
     selected?: boolean;
     destination?: boolean;
+    valid?: boolean;
     style?: React.CSSProperties;
     onMouseDown?: () => void;
     onMouseUp?: () => void;

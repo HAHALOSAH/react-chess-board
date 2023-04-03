@@ -9,6 +9,7 @@ interface ChessBoardSquareProps {
     piece?: ChessPiece;
     selected?: boolean;
     destination?: boolean;
+    valid?: boolean;
     style?: React.CSSProperties;
     onMouseDown?: () => void;
     onMouseUp?: () => void;

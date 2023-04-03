@@ -41,6 +41,7 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
         this.state = {
             isDragging: false,
             willDeselect: false,
+            legalMoves: [],
         };
 
         this.onSquareHover = this.onSquareHover.bind(this);
@@ -83,8 +84,9 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
                         let file = i % 8;
                         let selected = this.state.selectedSquare?.row == row && this.state.selectedSquare.file == file;
                         let destination = this.state.destinationSquare?.row == row && this.state.destinationSquare.file == file && !selected;
+                        let valid = this.state.selectedSquare && this.state.legalMoves.some(square => square.row == row && square.file == file);
                         return (
-                            <ChessBoardSquare piece={this.props.pieces[row][file]} square={{ row: row, file: file }} key={i} selected={selected}
+                            <ChessBoardSquare piece={this.props.pieces[row][file]} square={{ row: row, file: file }} key={i} selected={selected} valid={valid}
                                 destination={destination} onMouseDown={() => {
                                     this.onSquareMouseDown({ row: row, file: file });
                                 }} onMouseOver={() => {
@@ -150,6 +152,7 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
             this.setSelectedSquare(square);
             this.startDragging(square);
             this.setDestinationSquare(square);
+            this.updateLegalMoves(square);
         }
     }
 
@@ -250,11 +253,24 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
         document.removeEventListener('mousemove', this.onMouseMove);
         document.removeEventListener('mouseup', this.onMouseUp);
     }
+
+    updateLegalMoves(square: ChessSquare) {
+        if (this.props.getLegalMoves) {
+            this.setState({
+                legalMoves: this.props.getLegalMoves(square)
+            });
+        } else {
+            this.setState({
+                legalMoves: []
+            });
+        }
+    }
 }
 
 interface ChessBoardSquaresProps {
-    pieces: (ChessPiece | undefined)[][],
-    onMove?: (move: ChessMove) => void
+    pieces: (ChessPiece | undefined)[][];
+    onMove?: (move: ChessMove) => void;
+    getLegalMoves?: (square: ChessSquare) => ChessSquare[];
 }
 
 interface ChessBoardSquaresState {
@@ -264,4 +280,5 @@ interface ChessBoardSquaresState {
     hoveredSquare?: ChessSquare;
     isDragging: boolean;
     willDeselect: boolean;
+    legalMoves: ChessSquare[];
 }
