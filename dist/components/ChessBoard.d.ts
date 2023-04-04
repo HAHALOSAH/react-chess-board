@@ -1,6 +1,6 @@
 import React from 'react';
 import ChessBoardPromotionMenu from './ChessBoardPromotionMenu';
-import { ChessMove, ChessPiece, ChessSquare } from '../types';
+import { ChessColor, ChessMove, ChessPiece, ChessSquare } from '../types';
 import { Chess } from '../../node_modules/chess.js/dist/chess';
 export default class ChessBoard extends React.Component<ChessBoardProps, ChessBoardState> {
     _chess: Chess;
@@ -15,6 +15,8 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
         row: number;
         file: number;
     }[];
+    inCheck(): boolean;
+    getTurn(): ChessColor;
 }
 interface ChessBoardProps {
 }

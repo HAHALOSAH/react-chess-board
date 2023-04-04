@@ -33,6 +33,7 @@ export default class ChessBoardSquare extends React.Component<ChessBoardSquarePr
                     background: 'radial-gradient(transparent 0%, transparent 79%, #00000033 80%)',
                     pointerEvents: 'none',
                     opacity: this.props.valid ? 1 : 0,
+                    transition: '0.2s'
                 } : {
                     position: 'absolute',
                     inset: '0px',
@@ -43,6 +44,15 @@ export default class ChessBoardSquare extends React.Component<ChessBoardSquarePr
                     backgroundColor: '#00000033',
                     pointerEvents: 'none',
                     opacity: this.props.valid ? 1 : 0,
+                    transition: '0.2s'
+                }} ></div>
+                <div style={{
+                    position: 'absolute',
+                    inset: '0px',
+                    background: 'radial-gradient(#FF0000 20%, transparent 80%)',
+                    pointerEvents: 'none',
+                    opacity: this.props.underAttack ? 1 : 0,
+                    transition: '0.2s'
                 }} ></div>
                 <ChessPieceIcon piece={this.props.piece} />
             </div>
@@ -56,6 +66,7 @@ interface ChessBoardSquareProps {
     selected?: boolean;
     destination?: boolean;
     valid?: boolean;
+    underAttack?: boolean;
     style?: React.CSSProperties;
     onMouseDown?: () => void;
     onMouseUp?: () => void;

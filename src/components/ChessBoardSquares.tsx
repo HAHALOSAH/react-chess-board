@@ -52,6 +52,7 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
     }
 
     render() {
+        let inCheck = this.props.inCheck && this.props.inCheck();
         return (
             <div style={{
                 display: 'grid',
@@ -85,8 +86,10 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
                         let selected = this.state.selectedSquare?.row == row && this.state.selectedSquare.file == file;
                         let destination = this.state.destinationSquare?.row == row && this.state.destinationSquare.file == file && !selected;
                         let valid = this.state.selectedSquare && this.state.legalMoves.some(square => square.row == row && square.file == file);
+                        let piece = this.props.pieces[row][file];
+                        let underAttack = inCheck && piece && piece.type == ChessPieceType.KING && this.props.getTurn && this.props.getTurn() == piece.color;
                         return (
-                            <ChessBoardSquare piece={this.props.pieces[row][file]} square={{ row: row, file: file }} key={i} selected={selected} valid={valid}
+                            <ChessBoardSquare piece={piece} square={{ row: row, file: file }} key={i} selected={selected} valid={valid} underAttack={underAttack}
                                 destination={destination} onMouseDown={() => {
                                     this.onSquareMouseDown({ row: row, file: file });
                                 }} onMouseOver={() => {
@@ -271,6 +274,8 @@ interface ChessBoardSquaresProps {
     pieces: (ChessPiece | undefined)[][];
     onMove?: (move: ChessMove) => void;
     getLegalMoves?: (square: ChessSquare) => ChessSquare[];
+    inCheck?: () => boolean;
+    getTurn?: () => ChessColor;
 }
 
 interface ChessBoardSquaresState {

@@ -21,6 +21,8 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
         this.onClick = this.onClick.bind(this);
         this.onMove = this.onMove.bind(this);
         this.getLegalMoves = this.getLegalMoves.bind(this);
+        this.inCheck = this.inCheck.bind(this);
+        this.getTurn = this.getTurn.bind(this);
     }
 
     render() {
@@ -29,7 +31,7 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
                 width: '100%',
                 aspectRatio: '1/1',
             }} onClick={this.onClick}>
-                <ChessBoardSquares pieces={this.state.pieces} onMove={this.onMove} getLegalMoves={this.getLegalMoves} />
+                <ChessBoardSquares pieces={this.state.pieces} onMove={this.onMove} getLegalMoves={this.getLegalMoves} inCheck={this.inCheck} getTurn={this.getTurn} />
                 <ChessBoardPromotionMenu ref={this.promotionMenu} />
             </div>
         );
@@ -96,6 +98,14 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
                 file: ["a", "b", "c", "d", "e", "f", "g", "h"].indexOf(move.to[0])
             };
         });
+    }
+
+    inCheck() {
+        return this._chess.inCheck();
+    }
+
+    getTurn(): ChessColor {
+        return this._chess.turn() == "w" ? ChessColor.WHITE : ChessColor.BLACK;
     }
 }
 

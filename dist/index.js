@@ -92,6 +92,7 @@ class ChessBoardSquare extends React.Component {
                         background: 'radial-gradient(transparent 0%, transparent 79%, #00000033 80%)',
                         pointerEvents: 'none',
                         opacity: this.props.valid ? 1 : 0,
+                        transition: '0.2s'
                     } : {
                         position: 'absolute',
                         inset: '0px',
@@ -102,9 +103,32 @@ class ChessBoardSquare extends React.Component {
                         backgroundColor: '#00000033',
                         pointerEvents: 'none',
                         opacity: this.props.valid ? 1 : 0,
+                        transition: '0.2s'
+                    } }), jsxRuntime.jsx("div", { style: {
+                        position: 'absolute',
+                        inset: '0px',
+                        background: 'radial-gradient(#FF0000 20%, transparent 80%)',
+                        pointerEvents: 'none',
+                        opacity: this.props.underAttack ? 1 : 0,
+                        transition: '0.2s'
                     } }), jsxRuntime.jsx(ChessPieceIcon, { piece: this.props.piece })] })));
     }
 }
+
+var ChessColor;
+(function (ChessColor) {
+    ChessColor[ChessColor["WHITE"] = 0] = "WHITE";
+    ChessColor[ChessColor["BLACK"] = 1] = "BLACK";
+})(ChessColor || (ChessColor = {}));
+var ChessPieceType;
+(function (ChessPieceType) {
+    ChessPieceType[ChessPieceType["PAWN"] = 0] = "PAWN";
+    ChessPieceType[ChessPieceType["KNIGHT"] = 1] = "KNIGHT";
+    ChessPieceType[ChessPieceType["BISHOP"] = 2] = "BISHOP";
+    ChessPieceType[ChessPieceType["ROOK"] = 3] = "ROOK";
+    ChessPieceType[ChessPieceType["QUEEN"] = 4] = "QUEEN";
+    ChessPieceType[ChessPieceType["KING"] = 5] = "KING";
+})(ChessPieceType || (ChessPieceType = {}));
 
 // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
 function getElementPosition(element) {
@@ -142,6 +166,7 @@ class ChessBoardSquares extends React.Component {
         this.onMouseMove = this.onMouseMove.bind(this);
     }
     render() {
+        let inCheck = this.props.inCheck && this.props.inCheck();
         return (jsxRuntime.jsxs("div", Object.assign({ style: {
                 display: 'grid',
                 gridTemplateColumns: 'repeat(8, 1fr)',
@@ -157,7 +182,9 @@ class ChessBoardSquares extends React.Component {
                     let selected = ((_a = this.state.selectedSquare) === null || _a === void 0 ? void 0 : _a.row) == row && this.state.selectedSquare.file == file;
                     let destination = ((_b = this.state.destinationSquare) === null || _b === void 0 ? void 0 : _b.row) == row && this.state.destinationSquare.file == file && !selected;
                     let valid = this.state.selectedSquare && this.state.legalMoves.some(square => square.row == row && square.file == file);
-                    return (jsxRuntime.jsx(ChessBoardSquare, { piece: this.props.pieces[row][file], square: { row: row, file: file }, selected: selected, valid: valid, destination: destination, onMouseDown: () => {
+                    let piece = this.props.pieces[row][file];
+                    let underAttack = inCheck && piece && piece.type == ChessPieceType.KING && this.props.getTurn && this.props.getTurn() == piece.color;
+                    return (jsxRuntime.jsx(ChessBoardSquare, { piece: piece, square: { row: row, file: file }, selected: selected, valid: valid, underAttack: underAttack, destination: destination, onMouseDown: () => {
                             this.onSquareMouseDown({ row: row, file: file });
                         }, onMouseOver: () => {
                             this.onSquareHover({ row: row, file: file });
@@ -314,21 +341,6 @@ class ChessBoardSquares extends React.Component {
         }
     }
 }
-
-var ChessColor;
-(function (ChessColor) {
-    ChessColor[ChessColor["WHITE"] = 0] = "WHITE";
-    ChessColor[ChessColor["BLACK"] = 1] = "BLACK";
-})(ChessColor || (ChessColor = {}));
-var ChessPieceType;
-(function (ChessPieceType) {
-    ChessPieceType[ChessPieceType["PAWN"] = 0] = "PAWN";
-    ChessPieceType[ChessPieceType["KNIGHT"] = 1] = "KNIGHT";
-    ChessPieceType[ChessPieceType["BISHOP"] = 2] = "BISHOP";
-    ChessPieceType[ChessPieceType["ROOK"] = 3] = "ROOK";
-    ChessPieceType[ChessPieceType["QUEEN"] = 4] = "QUEEN";
-    ChessPieceType[ChessPieceType["KING"] = 5] = "KING";
-})(ChessPieceType || (ChessPieceType = {}));
 
 class ChessBoardPromotionMenu extends React.Component {
     constructor(props) {
@@ -2206,12 +2218,14 @@ class ChessBoard extends React.Component {
         this.onClick = this.onClick.bind(this);
         this.onMove = this.onMove.bind(this);
         this.getLegalMoves = this.getLegalMoves.bind(this);
+        this.inCheck = this.inCheck.bind(this);
+        this.getTurn = this.getTurn.bind(this);
     }
     render() {
         return (jsxRuntime.jsxs("div", Object.assign({ style: {
                 width: '100%',
                 aspectRatio: '1/1',
-            }, onClick: this.onClick }, { children: [jsxRuntime.jsx(ChessBoardSquares, { pieces: this.state.pieces, onMove: this.onMove, getLegalMoves: this.getLegalMoves }), jsxRuntime.jsx(ChessBoardPromotionMenu, { ref: this.promotionMenu })] })));
+            }, onClick: this.onClick }, { children: [jsxRuntime.jsx(ChessBoardSquares, { pieces: this.state.pieces, onMove: this.onMove, getLegalMoves: this.getLegalMoves, inCheck: this.inCheck, getTurn: this.getTurn }), jsxRuntime.jsx(ChessBoardPromotionMenu, { ref: this.promotionMenu })] })));
     }
     onClick() {
     }
@@ -2275,6 +2289,12 @@ class ChessBoard extends React.Component {
                 file: ["a", "b", "c", "d", "e", "f", "g", "h"].indexOf(move.to[0])
             };
         });
+    }
+    inCheck() {
+        return this._chess.inCheck();
+    }
+    getTurn() {
+        return this._chess.turn() == "w" ? ChessColor.WHITE : ChessColor.BLACK;
     }
 }
 

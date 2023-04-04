@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChessMove, ChessPiece, ChessSquare } from '../types';
+import { ChessColor, ChessMove, ChessPiece, ChessSquare } from '../types';
 import ChessPieceIcon from './ChessPieceIcon';
 export default class ChessBoardSquares extends React.Component<ChessBoardSquaresProps, ChessBoardSquaresState> {
     draggedChessPieceStyles: React.CSSProperties;
@@ -29,6 +29,8 @@ interface ChessBoardSquaresProps {
     pieces: (ChessPiece | undefined)[][];
     onMove?: (move: ChessMove) => void;
     getLegalMoves?: (square: ChessSquare) => ChessSquare[];
+    inCheck?: () => boolean;
+    getTurn?: () => ChessColor;
 }
 interface ChessBoardSquaresState {
     selectedSquare?: ChessSquare;
