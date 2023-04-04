@@ -143,7 +143,7 @@ class ChessBoardSquares extends React.Component {
                 width: '100%',
                 height: '100%',
                 alignItems: 'stretch',
-                cursor: this.state.isDragging ? ('grabbing') : (this.state.selectedSquare ? (this.state.selectedSquare && this.state.hoveredSquare && (this.state.hoveredSquare.row == this.state.selectedSquare.row && this.state.hoveredSquare.file == this.state.selectedSquare.file) ? ('grab') : ('pointer')) : (this.state.hoveredSquare && this.props.pieces[this.state.hoveredSquare.row][this.state.hoveredSquare.file] ? ('pointer') : ('default'))),
+                cursor: this.state.isDragging ? ('grabbing') : (this.state.selectedSquare ? (this.state.selectedSquare && this.state.hoveredSquare && (this.state.hoveredSquare.row == this.state.selectedSquare.row && this.state.hoveredSquare.file == this.state.selectedSquare.file) ? ('grab') : ('pointer')) : (this.state.hoveredSquare && this.props.pieces[this.state.hoveredSquare.row][this.state.hoveredSquare.file] ? ('grab') : ('default'))),
             }, onMouseOut: this.onMouseOut, onMouseDown: this.onMouseDown, ref: this.chessBoardSquares }, { children: [Array(8 * 8).fill(0).map((_, i) => {
                     var _a, _b;
                     let row = (i / 8) | 0;
