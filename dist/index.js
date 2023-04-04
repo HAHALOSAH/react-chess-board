@@ -2252,7 +2252,7 @@ class ChessBoard extends React.Component {
                 this._chess.move({
                     from: chessSquareToText(move.from),
                     to: chessSquareToText(move.to),
-                    promotion: typeof promotionTo == 'number' ? ["p", "k", "b", "r", "q", "k"][promotionTo] : undefined
+                    promotion: typeof promotionTo == 'number' ? ["p", "n", "b", "r", "q", "k"][promotionTo] : undefined
                 });
             }
             catch (e) {
