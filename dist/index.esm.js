@@ -84,12 +84,18 @@ class ChessBoardSquare extends React.Component {
                         pointerEvents: 'none',
                         opacity: this.props.selected ? 1 : 0,
                         transition: '0.2s'
-                    } }), jsx("div", { style: {
+                    } }), jsx("div", { style: typeof this.props.piece == 'object' ? {
+                        position: 'absolute',
+                        inset: '0px',
+                        background: 'radial-gradient(transparent 0%, transparent 79%, #00000033 80%)',
+                        pointerEvents: 'none',
+                        opacity: this.props.valid ? 1 : 0,
+                    } : {
                         position: 'absolute',
                         inset: '0px',
                         margin: 'auto',
-                        width: typeof this.props.piece == 'object' ? '100%' : '35%',
-                        height: typeof this.props.piece == 'object' ? '100%' : '35%',
+                        width: '35%',
+                        height: '35%',
                         borderRadius: '50%',
                         backgroundColor: '#00000033',
                         pointerEvents: 'none',
