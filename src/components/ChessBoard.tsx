@@ -95,16 +95,16 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
         this.updatePieces();
     }
 
-    getLegalMoves(square: ChessSquare) {
+    getLegalMoves(square: ChessSquare): ChessSquare[] {
         return this._chess.moves({ square: chessSquareToText(square) as Square, verbose: true }).map(move => {
             return {
                 row: 8 - parseInt(move.to[1]),
                 file: ["a", "b", "c", "d", "e", "f", "g", "h"].indexOf(move.to[0])
-            };
+            } as ChessSquare;
         });
     }
 
-    inCheck() {
+    inCheck(): boolean {
         return this._chess.inCheck();
     }
 
