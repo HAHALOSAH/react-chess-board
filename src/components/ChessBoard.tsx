@@ -15,7 +15,8 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
     }) {
         super(props);
         this.state = {
-            pieces: Array(8).fill([])
+            pieces: Array(8).fill([]),
+            recent: []
         }
 
         this.onClick = this.onClick.bind(this);
@@ -31,7 +32,7 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
                 width: '100%',
                 aspectRatio: '1/1',
             }} onClick={this.onClick}>
-                <ChessBoardSquares pieces={this.state.pieces} onMove={this.onMove} getLegalMoves={this.getLegalMoves} inCheck={this.inCheck} getTurn={this.getTurn} />
+                <ChessBoardSquares pieces={this.state.pieces} onMove={this.onMove} getLegalMoves={this.getLegalMoves} inCheck={this.inCheck} getTurn={this.getTurn} recent={this.state.recent} />
                 <ChessBoardPromotionMenu ref={this.promotionMenu} />
             </div>
         );
@@ -84,6 +85,9 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
                 to: chessSquareToText(move.to),
                 promotion: typeof promotionTo == 'number' ? ["p", "n", "b", "r", "q", "k"][promotionTo] : undefined
             });
+            this.setState({
+                recent: [move.from, move.to]
+            });
         } catch (e) {
             // Invalid move, just ignore it
             return;
@@ -115,5 +119,6 @@ interface ChessBoardProps {
 
 interface ChessBoardState {
     selectedSquare?: ChessSquare;
-    pieces: (ChessPiece | undefined)[][]
+    pieces: (ChessPiece | undefined)[][],
+    recent: ChessSquare[],
 }

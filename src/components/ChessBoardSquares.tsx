@@ -88,8 +88,9 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
                         let valid = this.state.selectedSquare && this.state.legalMoves.some(square => square.row == row && square.file == file);
                         let piece = this.props.pieces[row][file];
                         let underAttack = inCheck && piece && piece.type == ChessPieceType.KING && this.props.getTurn && this.props.getTurn() == piece.color;
+                        let recent = typeof this.props.recent.find(square => square.row == row && square.file == file) != 'undefined';
                         return (
-                            <ChessBoardSquare piece={piece} square={{ row: row, file: file }} key={i} selected={selected} valid={valid} underAttack={underAttack}
+                            <ChessBoardSquare piece={piece} square={{ row: row, file: file }} key={i} selected={selected} valid={valid} underAttack={underAttack} recent={recent}
                                 destination={destination} onMouseDown={() => {
                                     this.onSquareMouseDown({ row: row, file: file });
                                 }} onMouseOver={() => {
@@ -272,6 +273,7 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
 
 interface ChessBoardSquaresProps {
     pieces: (ChessPiece | undefined)[][];
+    recent: ChessSquare[];
     onMove?: (move: ChessMove) => void;
     getLegalMoves?: (square: ChessSquare) => ChessSquare[];
     inCheck?: () => boolean;

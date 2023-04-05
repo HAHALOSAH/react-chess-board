@@ -23,5 +23,6 @@ interface ChessBoardProps {
 interface ChessBoardState {
     selectedSquare?: ChessSquare;
     pieces: (ChessPiece | undefined)[][];
+    recent: ChessSquare[];
 }
 export {};

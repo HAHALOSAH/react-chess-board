@@ -22,9 +22,9 @@ export default class ChessBoardSquare extends React.Component<ChessBoardSquarePr
                 <div style={{
                     position: 'absolute',
                     inset: '0px',
-                    backgroundColor: '#FF6666DD',
+                    backgroundColor: this.props.selected ? '#FF6666DD' : '#AACCFF88',
                     pointerEvents: 'none',
-                    opacity: this.props.selected ? 1 : 0,
+                    opacity: this.props.selected || this.props.recent ? 1 : 0,
                     transition: '0.2s'
                 }}></div>
                 <div style={typeof this.props.piece == 'object' ? {
@@ -67,6 +67,7 @@ interface ChessBoardSquareProps {
     destination?: boolean;
     valid?: boolean;
     underAttack?: boolean;
+    recent?: boolean;
     style?: React.CSSProperties;
     onMouseDown?: () => void;
     onMouseUp?: () => void;

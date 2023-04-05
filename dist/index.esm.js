@@ -80,9 +80,9 @@ class ChessBoardSquare extends React.Component {
         return (jsxs("div", Object.assign({ style: Object.assign(Object.assign({}, this.props.style), { backgroundColor: (this.props.square.row + this.props.square.file) % 2 === 0 ? 'white' : '#AAAAAA', border: this.props.destination ? '8px solid #FF6666DD' : '0px solid #FF6666DD', width: '100%', height: '100%', position: 'relative', boxSizing: 'border-box', transition: '0.2s' }), onMouseDown: this.props.onMouseDown, onMouseUp: this.props.onMouseUp, onMouseOver: this.props.onMouseOver, onClick: this.props.onClick, tabIndex: 0 }, { children: [jsx("div", { style: {
                         position: 'absolute',
                         inset: '0px',
-                        backgroundColor: '#FF6666DD',
+                        backgroundColor: this.props.selected ? '#FF6666DD' : '#AACCFF88',
                         pointerEvents: 'none',
-                        opacity: this.props.selected ? 1 : 0,
+                        opacity: this.props.selected || this.props.recent ? 1 : 0,
                         transition: '0.2s'
                     } }), jsx("div", { style: typeof this.props.piece == 'object' ? {
                         position: 'absolute',
@@ -182,7 +182,8 @@ class ChessBoardSquares extends React.Component {
                     let valid = this.state.selectedSquare && this.state.legalMoves.some(square => square.row == row && square.file == file);
                     let piece = this.props.pieces[row][file];
                     let underAttack = inCheck && piece && piece.type == ChessPieceType.KING && this.props.getTurn && this.props.getTurn() == piece.color;
-                    return (jsx(ChessBoardSquare, { piece: piece, square: { row: row, file: file }, selected: selected, valid: valid, underAttack: underAttack, destination: destination, onMouseDown: () => {
+                    let recent = typeof this.props.recent.find(square => square.row == row && square.file == file) != 'undefined';
+                    return (jsx(ChessBoardSquare, { piece: piece, square: { row: row, file: file }, selected: selected, valid: valid, underAttack: underAttack, recent: recent, destination: destination, onMouseDown: () => {
                             this.onSquareMouseDown({ row: row, file: file });
                         }, onMouseOver: () => {
                             this.onSquareHover({ row: row, file: file });
@@ -2211,7 +2212,8 @@ class ChessBoard extends React.Component {
         this._chess = new Chess();
         this.promotionMenu = React.createRef();
         this.state = {
-            pieces: Array(8).fill([])
+            pieces: Array(8).fill([]),
+            recent: []
         };
         this.onClick = this.onClick.bind(this);
         this.onMove = this.onMove.bind(this);
@@ -2223,7 +2225,7 @@ class ChessBoard extends React.Component {
         return (jsxs("div", Object.assign({ style: {
                 width: '100%',
                 aspectRatio: '1/1',
-            }, onClick: this.onClick }, { children: [jsx(ChessBoardSquares, { pieces: this.state.pieces, onMove: this.onMove, getLegalMoves: this.getLegalMoves, inCheck: this.inCheck, getTurn: this.getTurn }), jsx(ChessBoardPromotionMenu, { ref: this.promotionMenu })] })));
+            }, onClick: this.onClick }, { children: [jsx(ChessBoardSquares, { pieces: this.state.pieces, onMove: this.onMove, getLegalMoves: this.getLegalMoves, inCheck: this.inCheck, getTurn: this.getTurn, recent: this.state.recent }), jsx(ChessBoardPromotionMenu, { ref: this.promotionMenu })] })));
     }
     onClick() {
     }
@@ -2271,6 +2273,9 @@ class ChessBoard extends React.Component {
                     from: chessSquareToText(move.from),
                     to: chessSquareToText(move.to),
                     promotion: typeof promotionTo == 'number' ? ["p", "n", "b", "r", "q", "k"][promotionTo] : undefined
+                });
+                this.setState({
+                    recent: [move.from, move.to]
                 });
             }
             catch (e) {

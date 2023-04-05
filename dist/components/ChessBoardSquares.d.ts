@@ -27,6 +27,7 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
 }
 interface ChessBoardSquaresProps {
     pieces: (ChessPiece | undefined)[][];
+    recent: ChessSquare[];
     onMove?: (move: ChessMove) => void;
     getLegalMoves?: (square: ChessSquare) => ChessSquare[];
     inCheck?: () => boolean;

@@ -11,6 +11,7 @@ interface ChessBoardSquareProps {
     destination?: boolean;
     valid?: boolean;
     underAttack?: boolean;
+    recent?: boolean;
     style?: React.CSSProperties;
     onMouseDown?: () => void;
     onMouseUp?: () => void;
