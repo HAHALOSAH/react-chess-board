@@ -10,9 +10,7 @@ import { chessSquareToText } from '../util';
 export default class ChessBoard extends React.Component<ChessBoardProps, ChessBoardState> {
     _chess = new Chess();
     promotionMenu: React.RefObject<ChessBoardPromotionMenu> = React.createRef();
-    constructor(props: {
-
-    }) {
+    constructor(props: ChessBoardProps) {
         super(props);
         this.state = {
             pieces: Array(8).fill([]),

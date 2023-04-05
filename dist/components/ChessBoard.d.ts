@@ -5,7 +5,7 @@ import { Chess } from '../../node_modules/chess.js/dist/chess';
 export default class ChessBoard extends React.Component<ChessBoardProps, ChessBoardState> {
     _chess: Chess;
     promotionMenu: React.RefObject<ChessBoardPromotionMenu>;
-    constructor(props: {});
+    constructor(props: ChessBoardProps);
     render(): JSX.Element;
     onClick(): void;
     updatePieces(): void;
