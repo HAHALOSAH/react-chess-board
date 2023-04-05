@@ -8,11 +8,14 @@ module.exports = [
             {
                 file: pkg.main,
                 format: 'cjs',
-                exports: 'auto'
+                exports: 'auto',
+                sourcemap: true
             },
             {
                 file: pkg.module,
-                format: 'esm'
+                format: 'esm',
+                exports: 'auto',
+                sourcemap: true
             }
         ],
         plugins: [

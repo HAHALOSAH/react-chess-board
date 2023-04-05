@@ -2302,3 +2302,4 @@ class ChessBoard extends React.Component {
 }
 
 export { ChessBoard };
+//# sourceMappingURL=index.esm.js.map

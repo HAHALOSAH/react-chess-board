@@ -2304,3 +2304,4 @@ class ChessBoard extends React.Component {
 }
 
 exports.ChessBoard = ChessBoard;
+//# sourceMappingURL=index.js.map
