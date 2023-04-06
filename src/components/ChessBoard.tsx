@@ -3,9 +3,8 @@ import React from 'react';
 import ChessBoardSquares from './ChessBoardSquares';
 import ChessBoardPromotionMenu from './ChessBoardPromotionMenu';
 
-import { ChessColor, ChessMove, ChessPiece, ChessPieceType, ChessSquare } from '../types';
-import { Chess, Square } from '../../node_modules/chess.js/dist/chess';
-import { chessSquareToText } from '../util';
+import { ChessColor, ChessMove, ChessPiece, ChessSquare } from '../types';
+import { Chess } from '../../node_modules/chess.js/dist/chess';
 
 export default class ChessBoard extends React.Component<ChessBoardProps, ChessBoardState> {
     _chess = new Chess();
@@ -13,15 +12,8 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
     constructor(props: ChessBoardProps) {
         super(props);
         this.state = {
-            pieces: Array(8).fill([]),
             recent: []
         }
-
-        this.onClick = this.onClick.bind(this);
-        this.onMove = this.onMove.bind(this);
-        this.getLegalMoves = this.getLegalMoves.bind(this);
-        this.inCheck = this.inCheck.bind(this);
-        this.getTurn = this.getTurn.bind(this);
     }
 
     render() {
@@ -29,8 +21,8 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
             <div style={{
                 width: '100%',
                 aspectRatio: '1/1',
-            }} onClick={this.onClick}>
-                <ChessBoardSquares pieces={this.state.pieces} onMove={this.onMove} getLegalMoves={this.getLegalMoves} inCheck={this.inCheck} getTurn={this.getTurn} recent={this.state.recent} />
+            }}>
+                <ChessBoardSquares pieces={this.props.pieces} onMove={this.props.onMove} getLegalMoves={this.props.getLegalMoves} inCheck={this.props.inCheck} getTurn={this.props.getTurn} recent={this.state.recent} />
                 <ChessBoardPromotionMenu ref={this.promotionMenu} />
             </div>
         );
@@ -40,83 +32,21 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
 
     }
 
-    updatePieces() {
-        this.setState({
-            pieces:
-                (this._chess.board().map(row => {
-                    return row.map(piece => {
-                        if (piece == null) return undefined;
-                        return {
-                            color: piece.color == "w" ? ChessColor.WHITE : ChessColor.BLACK,
-                            type: ["p", "n", "b", "r", "q", "k"].indexOf(piece.type)
-                        };
-                    });
-                }) as (ChessPiece | undefined)[][])
-        });
-    }
-
     componentDidMount(): void {
-        this.updatePieces();
-    }
-
-    async onMove(move: ChessMove) {
-        var promotionTo: ChessPieceType | undefined = undefined;
-        if (this.state.pieces[move.from.row][move.from.file]?.type == ChessPieceType.PAWN) {
-            if (this.state.pieces[move.from.row][move.from.file]?.color == ChessColor.WHITE && move.to.row == 0) {
-                // White pawn promotion
-                if (this.promotionMenu.current) {
-                    promotionTo = await this.promotionMenu.current.openAsync(ChessColor.WHITE, move.to.file);
-                    if (!promotionTo) return;
-                }
-            }
-            if (this.state.pieces[move.from.row][move.from.file]?.color == ChessColor.BLACK && move.to.row == 7) {
-                // Black pawn promotion
-                if (this.promotionMenu.current) {
-                    promotionTo = await this.promotionMenu.current.openAsync(ChessColor.BLACK, move.to.file);
-                    if (!promotionTo) return;
-                }
-            }
-        }
-        try {
-            this._chess.move({
-                from: chessSquareToText(move.from),
-                to: chessSquareToText(move.to),
-                promotion: typeof promotionTo == 'number' ? ["p", "n", "b", "r", "q", "k"][promotionTo] : undefined
-            });
-            this.setState({
-                recent: [move.from, move.to]
-            });
-        } catch (e) {
-            // Invalid move, just ignore it
-            return;
-        }
-        this.updatePieces();
-    }
-
-    getLegalMoves(square: ChessSquare): ChessSquare[] {
-        return this._chess.moves({ square: chessSquareToText(square) as Square, verbose: true }).map(move => {
-            return {
-                row: 8 - parseInt(move.to[1]),
-                file: ["a", "b", "c", "d", "e", "f", "g", "h"].indexOf(move.to[0])
-            } as ChessSquare;
-        });
-    }
-
-    inCheck(): boolean {
-        return this._chess.inCheck();
-    }
-
-    getTurn(): ChessColor {
-        return this._chess.turn() == "w" ? ChessColor.WHITE : ChessColor.BLACK;
+        if (this.props.updatePieces) this.props.updatePieces();
     }
 }
 
 interface ChessBoardProps {
-
+    onMove?: (move: ChessMove) => void;
+    getLegalMoves?: (square: ChessSquare) => ChessSquare[];
+    inCheck?: () => boolean;
+    getTurn?: () => ChessColor;
+    updatePieces?: () => void;
+    pieces: (ChessPiece | undefined)[][],
 }
 
 interface ChessBoardState {
     selectedSquare?: ChessSquare;
-    pieces: (ChessPiece | undefined)[][],
     recent: ChessSquare[],
 }

@@ -1,31 +1,6 @@
 import { jsxs, jsx } from 'react/jsx-runtime';
 import React from 'react';
 
-/******************************************************************************
-Copyright (c) Microsoft Corporation.
-
-Permission to use, copy, modify, and/or distribute this software for any
-purpose with or without fee is hereby granted.
-
-THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
-REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
-INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
-LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
-OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
-PERFORMANCE OF THIS SOFTWARE.
-***************************************************************************** */
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
 var Staunty = {
     bB: (jsxs("svg", Object.assign({ clipRule: "evenodd", fillRule: "evenodd", imageRendering: "auto", shapeRendering: "geometricPrecision", textRendering: "geometricPrecision", version: "1.1", viewBox: "0 0 50 50", xmlns: "http://www.w3.org/2000/svg" }, { children: [jsx("path", { d: "m25 5.767c-2.1056 0-3.8124 0.87865-3.8121 1.9632l1.5166 2.6505c-16.049 14.089-5.707 27.135-5.707 27.135h16.006s7.0496-8.6714 0.76227-19.51l-2.989 4.8276c-0.67072 1.0833-1.9632 1.4898-2.898 0.91107-0.93477-0.57872-1.1472-1.917-0.47652-3.0003l3.8867-6.2771c-1.1073-1.3449-2.4252-2.7101-3.9926-4.0861l1.5166-2.6505c0-1.0846-1.7066-1.9632-3.8121-1.9632z", style: { fill: "#5f5955", strokeLinejoin: "round", strokeWidth: 1.2, stroke: "#1e1e1e" } }), jsx("path", { d: "m25 5.767c-0.8164 0-1.5711 0.1335-2.1913 0.35847 4.3387 0.84718 4.9765 1.1195 2.5601 4.3506l3.246 3.5665c-3.6565 8.2403-1.6037 7.9919-1.6037 7.9919s0.6964-2.6485 4.1117-7.7689c-1.0722-1.2796-2.3377-2.578-3.8266-3.8851l1.5161-2.6501c1e-4 -1.0845-1.7067-1.9631-3.8123-1.9634zm8.7655 12.238-1.0091 1.5127c3.7363 8.4129-4.1347 17.997-4.1347 17.997h4.3815c0.1581 0.0339 6.958-8.8438 0.76227-19.51z", style: { fill: "#000000", opacity: .18 } }), jsx("path", { d: "m15.145 31.721c-0.2191-0.0314-3.4233-9.7859 5.7543-18.751-2.3019 1.895-7.1351 13.163-5.7543 18.751z", style: { fill: "#ffffff", opacity: .25 } }), jsx("path", { d: "m23.292 10.196-1.4772-2.5943s0.2425-0.72175 1.7808-1.0472c-1.7266 1.3502-0.988 1.6622-0.3036 3.6415z", style: { fill: "#ffffff", opacity: .25 } }), jsx("path", { d: "m25 36.457s-9.1309 0.048-11.691 1.6192c-1.7273 1.0602-2.1348 3.6514-1.8998 6.3237h27.182c0.2349-2.6723-0.1726-5.2636-1.8999-6.3237-2.5597-1.5711-11.691-1.6192-11.691-1.6192z", style: { clipRule: "evenodd", fillRule: "evenodd", fill: "#5f5955", imageRendering: "auto", shapeRendering: "geometricPrecision", strokeLinejoin: "round", strokeWidth: 1.2, stroke: "#1e1e1e" } }), jsx("path", { d: "m25 37.147s-8.7121-0.1374-11.624 1.6658c-0.3699 0.229-0.6993 0.8394-0.9536 1.3902 0.2607-0.3313 0.5021-0.6131 0.8866-0.8491 2.5598-1.5711 11.691-1.6191 11.691-1.6191s9.1318 0.048 11.692 1.6191c0.391 0.24 0.5924 0.5317 0.8556 0.8701 0.026-0.076-0.4084-1.1578-1.1438-1.5962-2.7554-1.492-11.403-1.4808-11.403-1.4808z", style: { clipRule: "evenodd", fillRule: "evenodd", fill: "#ffffff", imageRendering: "auto", opacity: .25, shapeRendering: "geometricPrecision" } })] }))),
     bK: (jsxs("svg", Object.assign({ clipRule: "evenodd", fillRule: "evenodd", imageRendering: "auto", shapeRendering: "geometricPrecision", textRendering: "geometricPrecision", version: "1.1", viewBox: "0 0 50 50", xmlns: "http://www.w3.org/2000/svg", xmlnsXlink: "http://www.w3.org/1999/xlink" }, { children: [jsx("path", { d: "m27.67 15.225v-3.5436h4.4396v-4.4293h-4.9344v-3.8933h-4.366v3.8933h-4.9344v4.4293h4.4396v3.5436", style: { clipRule: "evenodd", fillRule: "evenodd", fill: "#5f5955", imageRendering: "auto", shapeRendering: "geometricPrecision", strokeLinecap: "round", strokeWidth: 1.2, stroke: "#1e1e1e" } }), jsx("rect", { x: "20.299", y: "14.215", width: "9.3984", height: "2.7873", ry: "1.3937", style: { fill: "#5f5955", paintOrder: "normal", strokeLinejoin: "round", strokeWidth: 1.2, stroke: "#1e1e1e" } }), jsx("path", { d: "m26.416 14.215c0.72479 0 1.3082 0.62142 1.3082 1.3935 0 0.77209-0.58336 1.3935-1.3082 1.3935h1.9736c0.72478 0 1.3081-0.62144 1.3081-1.3935 0-0.77209-0.58336-1.3935-1.3081-1.3935z", style: { fill: "#000000", opacity: .18, paintOrder: "normal" } }), jsx("path", { d: "m21.631 14.842c-0.40169 0-0.72499 0.34468-0.72499 0.77259 0 0.42787 0.3233 0.77227 0.72499 0.77227h0.87379c-0.40169 0-0.72499-0.3444-0.72499-0.77227 0-0.42791 0.3233-0.77259 0.72499-0.77259z", style: { fill: "#ffffff", opacity: .25, paintOrder: "normal" } }), jsx("path", { d: "m33.635 36.986s7.776-13.318 6.6127-15.916c-1.1632-2.5964-8.4802-4.4974-15.248-4.4974-6.7677 0-14.084 1.9004-15.248 4.4974-1.1632 2.5966 6.6127 15.916 6.6127 15.916z", style: { clipRule: "evenodd", fillRule: "evenodd", fill: "#5f5955", imageRendering: "auto", shapeRendering: "geometricPrecision", strokeLinecap: "round", strokeWidth: 1.2, stroke: "#1e1e1e" } }), jsx("path", { d: "m24.996 16.576c15.938 2.6216 12.573 9.3539 6.6406 22.543l2.0273-1.7288s7.7472-13.723 6.5839-16.32c-1.5452-2.8334-7.5027-4.1592-15.252-4.4945z", style: { clipRule: "evenodd", fillRule: "evenodd", imageRendering: "auto", opacity: .18, shapeRendering: "geometricPrecision" } }), jsx("path", { d: "m23.765 17.295c-3.904-0.18436-14.621 1.8014-13.503 5.0167 0.81724 3.7274 2.7544 7.244 4.5085 10.504-5.6872-10.335-5.9421-13.774 8.9943-15.521z", style: { clipRule: "evenodd", fillRule: "evenodd", fill: "#ffffff", imageRendering: "auto", opacity: .25, shapeRendering: "geometricPrecision" } }), jsx("path", { d: "m23.391 3.997-0.01613 3.3123h0.54565l0.01622-3.3123zm-4.9311 3.8699-0.0075 3.2077h0.77316l0.0075-3.2077zm4.4128 3.213 0.02573 2.4859h0.52l-0.02573-2.4859z", style: { clipRule: "evenodd", fillRule: "evenodd", fill: "#ffffff", imageRendering: "auto", opacity: .25, shapeRendering: "geometricPrecision" } }), jsx("path", { d: "m26.189 3.3582-1.9e-5 3.8935h0.98678l2.8e-5 -3.8935zm4.441 3.8937v4.9453h1.4802v-4.9453zm-4.4396 4.4291 2.7e-5 2.4923h1.4802l-2.8e-5 -2.4923z", style: { clipRule: "evenodd", fillRule: "evenodd", fill: "#000000", imageRendering: "auto", opacity: .18, shapeRendering: "geometricPrecision" } }), jsx("path", { d: "m25 36.457s-9.1309 0.0481-11.691 1.6192c-1.7273 1.0602-2.1348 3.6514-1.8998 6.3237h27.182c0.23495-2.6723-0.17255-5.2636-1.8999-6.3237-2.5597-1.5711-11.691-1.6192-11.691-1.6192z", style: { clipRule: "evenodd", fillRule: "evenodd", fill: "#5f5955", imageRendering: "auto", shapeRendering: "geometricPrecision", strokeLinejoin: "round", strokeWidth: 1.2, stroke: "#1e1e1e" } }), jsx("path", { d: "m25 37.147s-8.7121-0.13732-11.624 1.6658c-0.36985 0.22904-0.69925 0.83943-0.95359 1.3902 0.26077-0.3313 0.50213-0.61301 0.88663-0.84901 2.5598-1.5711 11.691-1.6191 11.691-1.6191s9.1318 0.0479 11.692 1.6191c0.39104 0.24 0.59243 0.53161 0.85561 0.87009 0.0258-0.0759-0.40837-1.1578-1.1438-1.5962-2.7554-1.492-11.403-1.4808-11.403-1.4808z", style: { clipRule: "evenodd", fillRule: "evenodd", fill: "#ffffff", imageRendering: "auto", opacity: .25, shapeRendering: "geometricPrecision" } })] }))),
@@ -2202,11 +2177,59 @@ class Chess {
     }
 }
 
+class ChessBoard extends React.Component {
+    constructor(props) {
+        super(props);
+        this._chess = new Chess();
+        this.promotionMenu = React.createRef();
+        this.state = {
+            recent: []
+        };
+    }
+    render() {
+        return (jsxs("div", Object.assign({ style: {
+                width: '100%',
+                aspectRatio: '1/1',
+            } }, { children: [jsx(ChessBoardSquares, { pieces: this.props.pieces, onMove: this.props.onMove, getLegalMoves: this.props.getLegalMoves, inCheck: this.props.inCheck, getTurn: this.props.getTurn, recent: this.state.recent }), jsx(ChessBoardPromotionMenu, { ref: this.promotionMenu })] })));
+    }
+    onClick() {
+    }
+    componentDidMount() {
+        if (this.props.updatePieces)
+            this.props.updatePieces();
+    }
+}
+
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
 function chessSquareToText(square) {
     return ["a", "b", "c", "d", "e", "f", "g", "h"][square.file] + (8 - square.row);
 }
 
-class ChessBoard extends React.Component {
+class ChessBoardOTB extends React.Component {
     constructor(props) {
         super(props);
         this._chess = new Chess();
@@ -2215,19 +2238,14 @@ class ChessBoard extends React.Component {
             pieces: Array(8).fill([]),
             recent: []
         };
-        this.onClick = this.onClick.bind(this);
         this.onMove = this.onMove.bind(this);
         this.getLegalMoves = this.getLegalMoves.bind(this);
         this.inCheck = this.inCheck.bind(this);
         this.getTurn = this.getTurn.bind(this);
+        this.updatePieces = this.updatePieces.bind(this);
     }
     render() {
-        return (jsxs("div", Object.assign({ style: {
-                width: '100%',
-                aspectRatio: '1/1',
-            }, onClick: this.onClick }, { children: [jsx(ChessBoardSquares, { pieces: this.state.pieces, onMove: this.onMove, getLegalMoves: this.getLegalMoves, inCheck: this.inCheck, getTurn: this.getTurn, recent: this.state.recent }), jsx(ChessBoardPromotionMenu, { ref: this.promotionMenu })] })));
-    }
-    onClick() {
+        return (jsx("div", { children: jsx(ChessBoard, { onMove: this.onMove, getLegalMoves: this.getLegalMoves, inCheck: this.inCheck, getTurn: this.getTurn, updatePieces: this.updatePieces, pieces: this.state.pieces }) }));
     }
     updatePieces() {
         this.setState({
@@ -2301,5 +2319,5 @@ class ChessBoard extends React.Component {
     }
 }
 
-export { ChessBoard };
+export { ChessBoard, ChessBoardOTB };
 //# sourceMappingURL=index.esm.js.map

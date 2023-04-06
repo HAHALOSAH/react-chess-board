@@ -1,2 +1,3 @@
 import ChessBoard from "./components/ChessBoard";
-export { ChessBoard };
+import ChessBoardOTB from "./components/ChessBoardOTB";
+export { ChessBoard, ChessBoardOTB };
