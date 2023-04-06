@@ -6,10 +6,11 @@ import ChessBoardPromotionMenu from './ChessBoardPromotionMenu';
 import { ChessColor, ChessMove, ChessPiece, ChessPieceType, ChessSquare } from '../types';
 import { Chess, Square } from '../../node_modules/chess.js/dist/chess';
 import { chessSquareToText } from '../util';
+import { ChessBoardConfig } from '../ChessBoardConfig';
 
 export default class ChessBoardOTB extends React.Component<ChessBoardProps, ChessBoardState> {
     _chess = new Chess();
-    promotionMenu: React.RefObject<ChessBoardPromotionMenu> = React.createRef();
+    chessBoard: React.RefObject<ChessBoard> = React.createRef();
     constructor(props: ChessBoardProps) {
         super(props);
         this.state = {
@@ -28,7 +29,7 @@ export default class ChessBoardOTB extends React.Component<ChessBoardProps, Ches
     render() {
         return (
             <div>
-                <ChessBoard onMove={this.onMove} getLegalMoves={this.getLegalMoves} inCheck={this.inCheck} getTurn={this.getTurn} updatePieces={this.updatePieces} pieces={this.state.pieces} />
+                <ChessBoard onMove={this.onMove} getLegalMoves={this.getLegalMoves} inCheck={this.inCheck} getTurn={this.getTurn} updatePieces={this.updatePieces} pieces={this.state.pieces} config={this.props.config} ref={this.chessBoard} />
             </div>
         );
     }
@@ -57,15 +58,15 @@ export default class ChessBoardOTB extends React.Component<ChessBoardProps, Ches
         if (this.state.pieces[move.from.row][move.from.file]?.type == ChessPieceType.PAWN) {
             if (this.state.pieces[move.from.row][move.from.file]?.color == ChessColor.WHITE && move.to.row == 0) {
                 // White pawn promotion
-                if (this.promotionMenu.current) {
-                    promotionTo = await this.promotionMenu.current.openAsync(ChessColor.WHITE, move.to.file);
+                if (this.chessBoard.current) {
+                    promotionTo = await this.chessBoard.current.promotion(ChessColor.WHITE, move.to.file);
                     if (!promotionTo) return;
                 }
             }
             if (this.state.pieces[move.from.row][move.from.file]?.color == ChessColor.BLACK && move.to.row == 7) {
                 // Black pawn promotion
-                if (this.promotionMenu.current) {
-                    promotionTo = await this.promotionMenu.current.openAsync(ChessColor.BLACK, move.to.file);
+                if (this.chessBoard.current) {
+                    promotionTo = await this.chessBoard.current.promotion(ChessColor.BLACK, move.to.file);
                     if (!promotionTo) return;
                 }
             }
@@ -105,11 +106,11 @@ export default class ChessBoardOTB extends React.Component<ChessBoardProps, Ches
 }
 
 interface ChessBoardProps {
-
+    config?: ChessBoardConfig;
 }
 
 interface ChessBoardState {
     selectedSquare?: ChessSquare;
-    pieces: (ChessPiece | undefined)[][],
-    recent: ChessSquare[],
+    pieces: (ChessPiece | undefined)[][];
+    recent: ChessSquare[];
 }

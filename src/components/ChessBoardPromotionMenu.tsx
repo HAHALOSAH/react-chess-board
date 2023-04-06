@@ -1,7 +1,8 @@
 import React from 'react';
 
 import ChessBoardSquare from './ChessBoardSquare';
-import { ChessColor, ChessPiece, ChessPieceType } from '../types';
+import { ChessColor, ChessPieceType } from '../types';
+import { ChessBoardConfig } from '../ChessBoardConfig';
 
 export default class ChessBoardPromotionMenu extends React.Component<ChessBoardPromotionMenuProps, ChessBoardPromotionMenuState> {
     backdrop: React.RefObject<HTMLDivElement> = React.createRef();
@@ -32,7 +33,7 @@ export default class ChessBoardPromotionMenu extends React.Component<ChessBoardP
                 <div style={{
                     position: 'absolute',
                     inset: '0px',
-                    backgroundColor: '#00000088',
+                    backgroundColor: this.props.config?.promotionMenu?.backdropBackgroundColor || '#00000088',
                 }} ref={this.backdrop} onClick={() => {
                     this.close();
                     this.returnCallbacks(undefined);
@@ -48,7 +49,11 @@ export default class ChessBoardPromotionMenu extends React.Component<ChessBoardP
                     position: 'relative',
                     left: (this.state.file || 0) / 8 * 100 + '%',
                     top: (this.state.color == ChessColor.WHITE ? 0 : 4) / 8 * 100 + '%',
-                    filter: 'drop-shadow(0px 0px 16px #000000)'
+                    filter: (this.props.config?.promotionMenu?.shadow?.enabled || true) ? `drop-shadow(0px 0px ${
+                        this.props.config?.promotionMenu?.shadow?.radius || '16px'
+                    } ${
+                        this.props.config?.promotionMenu?.shadow?.color || '#000000'
+                    })` : undefined,
                 }} onMouseOut={this.onMouseOut}>
                     <ChessBoardSquare square={{ row: this.state.color == ChessColor.WHITE ? 0 : 7, file: this.state.file || 0 }} piece={
                         typeof this.state.color == 'number' ? { color: this.state.color, type: ChessPieceType.QUEEN } : undefined
@@ -139,7 +144,7 @@ export default class ChessBoardPromotionMenu extends React.Component<ChessBoardP
 }
 
 interface ChessBoardPromotionMenuProps {
-
+    config?: ChessBoardConfig;
 }
 
 interface ChessBoardPromotionMenuState {

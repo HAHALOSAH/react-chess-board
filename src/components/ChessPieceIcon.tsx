@@ -3,6 +3,7 @@ import React from 'react';
 import Staunty from '../Staunty';
 
 import { ChessPiece } from '../types'
+import { ChessBoardConfig } from '../ChessBoardConfig';
 
 export default class ChessPieceIcon extends React.Component<ChessPieceIconProps> {
     render() {
@@ -46,5 +47,6 @@ export default class ChessPieceIcon extends React.Component<ChessPieceIconProps>
 }
 
 interface ChessPieceIconProps {
-    piece?: ChessPiece,
+    piece?: ChessPiece;
+    config?: ChessBoardConfig;
 }

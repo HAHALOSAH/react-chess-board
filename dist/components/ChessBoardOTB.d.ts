@@ -1,10 +1,11 @@
 import React from 'react';
-import ChessBoardPromotionMenu from './ChessBoardPromotionMenu';
+import ChessBoard from './ChessBoard';
 import { ChessColor, ChessMove, ChessPiece, ChessSquare } from '../types';
 import { Chess } from '../../node_modules/chess.js/dist/chess';
+import { ChessBoardConfig } from '../ChessBoardConfig';
 export default class ChessBoardOTB extends React.Component<ChessBoardProps, ChessBoardState> {
     _chess: Chess;
-    promotionMenu: React.RefObject<ChessBoardPromotionMenu>;
+    chessBoard: React.RefObject<ChessBoard>;
     constructor(props: ChessBoardProps);
     render(): JSX.Element;
     updatePieces(): void;
@@ -15,6 +16,7 @@ export default class ChessBoardOTB extends React.Component<ChessBoardProps, Ches
     getTurn(): ChessColor;
 }
 interface ChessBoardProps {
+    config?: ChessBoardConfig;
 }
 interface ChessBoardState {
     selectedSquare?: ChessSquare;

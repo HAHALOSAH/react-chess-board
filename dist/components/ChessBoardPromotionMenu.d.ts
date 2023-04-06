@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChessColor, ChessPieceType } from '../types';
+import { ChessBoardConfig } from '../ChessBoardConfig';
 export default class ChessBoardPromotionMenu extends React.Component<ChessBoardPromotionMenuProps, ChessBoardPromotionMenuState> {
     backdrop: React.RefObject<HTMLDivElement>;
     callbacks: ((result?: ChessPieceType) => void)[];
@@ -15,6 +16,7 @@ export default class ChessBoardPromotionMenu extends React.Component<ChessBoardP
     openAsync(color: ChessColor, file: number): Promise<ChessPieceType | undefined>;
 }
 interface ChessBoardPromotionMenuProps {
+    config?: ChessBoardConfig;
 }
 interface ChessBoardPromotionMenuState {
     isOpen: boolean;

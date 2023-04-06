@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChessPiece, ChessSquare } from '../types';
+import { ChessBoardConfig } from '../ChessBoardConfig';
 export default class ChessBoardSquare extends React.Component<ChessBoardSquareProps> {
     constructor(props: ChessBoardSquareProps);
     render(): JSX.Element;
@@ -17,5 +18,6 @@ interface ChessBoardSquareProps {
     onMouseUp?: () => void;
     onMouseOver?: () => void;
     onClick?: () => void;
+    config?: ChessBoardConfig;
 }
 export {};

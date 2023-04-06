@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import ChessBoardSquare from './ChessBoardSquare';
 import { ChessColor, ChessMove, ChessPiece, ChessPieceType, ChessSquare } from '../types';
 import ChessPieceIcon from './ChessPieceIcon';
-import { WHITE } from '../../node_modules/chess.js/dist/chess';
+import { ChessBoardConfig } from '../ChessBoardConfig';
 
 // https://stackoverflow.com/questions/5598743/finding-elements-position-relative-to-the-document
 function getElementPosition(element: HTMLElement): {
@@ -95,7 +94,7 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
                                     this.onSquareMouseDown({ row: row, file: file });
                                 }} onMouseOver={() => {
                                     this.onSquareHover({ row: row, file: file });
-                                }} />
+                                }} config={this.props.config} />
                         );
                     })
                 }
@@ -104,7 +103,7 @@ export default class ChessBoardSquares extends React.Component<ChessBoardSquares
                     ...this.draggedChessPieceStyles,
                     display: this.state.isDragging ? 'block' : 'none',
                 }} ref={this.draggedChessPieceContainer}>
-                    <ChessPieceIcon piece={this.state.draggedPiece} ref={this.draggedChessPiece} />
+                    <ChessPieceIcon piece={this.state.draggedPiece} ref={this.draggedChessPiece} config={this.props.config} />
                 </div>
             </div>
         );
@@ -278,6 +277,7 @@ interface ChessBoardSquaresProps {
     getLegalMoves?: (square: ChessSquare) => ChessSquare[];
     inCheck?: () => boolean;
     getTurn?: () => ChessColor;
+    config?: ChessBoardConfig;
 }
 
 interface ChessBoardSquaresState {

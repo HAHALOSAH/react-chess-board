@@ -5,6 +5,7 @@ import ChessBoardPromotionMenu from './ChessBoardPromotionMenu';
 
 import { ChessColor, ChessMove, ChessPiece, ChessSquare } from '../types';
 import { Chess } from '../../node_modules/chess.js/dist/chess';
+import { ChessBoardConfig } from '../ChessBoardConfig';
 
 export default class ChessBoard extends React.Component<ChessBoardProps, ChessBoardState> {
     _chess = new Chess();
@@ -22,14 +23,17 @@ export default class ChessBoard extends React.Component<ChessBoardProps, ChessBo
                 width: '100%',
                 aspectRatio: '1/1',
             }}>
-                <ChessBoardSquares pieces={this.props.pieces} onMove={this.props.onMove} getLegalMoves={this.props.getLegalMoves} inCheck={this.props.inCheck} getTurn={this.props.getTurn} recent={this.state.recent} />
-                <ChessBoardPromotionMenu ref={this.promotionMenu} />
+                <ChessBoardSquares pieces={this.props.pieces} onMove={this.props.onMove} getLegalMoves={this.props.getLegalMoves} inCheck={this.props.inCheck} getTurn={this.props.getTurn} recent={this.state.recent} config={this.props.config} />
+                <ChessBoardPromotionMenu ref={this.promotionMenu} config={this.props.config} />
             </div>
         );
     }
 
-    onClick() {
-
+    async promotion(color: ChessColor, file: number) {
+        if (!this.promotionMenu.current) {
+            return;
+        }
+        return await this.promotionMenu.current?.openAsync(color, file);
     }
 
     componentDidMount(): void {
@@ -43,10 +47,11 @@ interface ChessBoardProps {
     inCheck?: () => boolean;
     getTurn?: () => ChessColor;
     updatePieces?: () => void;
-    pieces: (ChessPiece | undefined)[][],
+    pieces: (ChessPiece | undefined)[][];
+    config?: ChessBoardConfig;
 }
 
 interface ChessBoardState {
     selectedSquare?: ChessSquare;
-    recent: ChessSquare[],
+    recent: ChessSquare[];
 }
